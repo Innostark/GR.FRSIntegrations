@@ -1,29 +1,29 @@
 ﻿using System;
 
-namespace Gf.Frs.MT940Loader.DataModel
+namespace Gf.Frs.OracleGLLoader.DataModel
 {
-    internal class AccountingEntry
+    public sealed class AccountingEntry
     {
         private string _uniqueReferenceKey;
         private string _journalEntryHeaderNumber;
         private string _journalEntryDescription;
-        private int _lineNumber;
+        private int? _lineNumber;
         private string _lineDescription;
         private string _accountNumber;
         private string _accountDescription;
         private string _subAccountDescription;
-        private DateTime _effectiveDate;
+        private DateTime? _effectiveDate;
         private string _entrySource;
-        private decimal _enteredDr;
-        private decimal _enteredCr;
-        private decimal _accountedDr;
-        private decimal _accountedCr;
+        private decimal? _enteredDr;
+        private decimal? _enteredCr;
+        private decimal? _accountedDr;
+        private decimal? _accountedCr;
         private string _currency;
-        private decimal _exchangeRate;
+        private decimal? _exchangeRate;
         private string _period;
-        private AccountingFiscalYear _fiscalYear;
-        private DateTime _jECreationDate;
-        private DateTime _jELastUpdateDate;
+        private AccountingFiscalYear? _fiscalYear;
+        private DateTime? _jECreationDate;
+        private DateTime? _jELastUpdateDate;
 
         public string UniqueReferenceKey
         {
@@ -64,7 +64,7 @@ namespace Gf.Frs.MT940Loader.DataModel
             }
         }
 
-        public int LineNumber
+        public int? LineNumber
         {
             get
             {
@@ -129,7 +129,7 @@ namespace Gf.Frs.MT940Loader.DataModel
             }
         }
 
-        public DateTime EffectiveDate
+        public DateTime? EffectiveDate
         {
             get
             {
@@ -155,7 +155,7 @@ namespace Gf.Frs.MT940Loader.DataModel
             }
         }
 
-        public decimal EnteredDr
+        public decimal? EnteredDr
         {
             get
             {
@@ -168,7 +168,7 @@ namespace Gf.Frs.MT940Loader.DataModel
             }
         }
 
-        public decimal EnteredCr
+        public decimal? EnteredCr
         {
             get
             {
@@ -181,7 +181,7 @@ namespace Gf.Frs.MT940Loader.DataModel
             }
         }
 
-        public decimal AccountedDr
+        public decimal? AccountedDr
         {
             get
             {
@@ -194,7 +194,7 @@ namespace Gf.Frs.MT940Loader.DataModel
             }
         }
 
-        public decimal AccountedCr
+        public decimal? AccountedCr
         {
             get
             {
@@ -220,7 +220,7 @@ namespace Gf.Frs.MT940Loader.DataModel
             }
         }
 
-        public decimal ExchangeRate
+        public decimal? ExchangeRate
         {
             get
             {
@@ -246,7 +246,7 @@ namespace Gf.Frs.MT940Loader.DataModel
             }
         }
 
-        public AccountingFiscalYear FiscalYear
+        public AccountingFiscalYear? FiscalYear
         {
             get
             {
@@ -259,7 +259,7 @@ namespace Gf.Frs.MT940Loader.DataModel
             }
         }
 
-        public DateTime JECreationDate
+        public DateTime? JECreationDate
         {
             get
             {
@@ -272,7 +272,7 @@ namespace Gf.Frs.MT940Loader.DataModel
             }
         }
 
-        public DateTime JELastUpdateDate
+        public DateTime? JELastUpdateDate
         {
             get
             {

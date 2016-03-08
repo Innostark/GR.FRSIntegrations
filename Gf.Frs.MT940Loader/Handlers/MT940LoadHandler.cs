@@ -4,7 +4,6 @@ using Gf.Frs.MT940Loader.Helpers;
 using Raptorious.SharpMt940Lib;
 using System.Linq;
 using System.Collections.Generic;
-using Gf.Frs.MT940Loader;
 
 namespace Gf.Frs.MT940Loader.Handlers
 {

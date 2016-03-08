@@ -34,6 +34,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CsvHelper, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <HintPath>..\packages\CsvHelper.2.13.5.0\lib\net40-client\CsvHelper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,11 +53,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Gf.Frs.MT940Loader\Gf.Frs.MT940Loader.csproj">
       <Project>{f58978f5-8273-4746-be9a-e00b12427beb}</Project>
       <Name>Gf.Frs.MT940Loader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Gf.Frs.OracleGLLoader\Gf.Frs.OracleGLLoader.csproj">
+      <Project>{7bf94b0a-026d-4196-9832-70ce9789e377}</Project>
+      <Name>Gf.Frs.OracleGLLoader</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

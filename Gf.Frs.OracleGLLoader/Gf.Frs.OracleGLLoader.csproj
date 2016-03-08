@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Csv\Converter\AccountingFiscalYearConverter.cs" />
+    <Compile Include="Csv\Map\AccountingEntryMap.cs" />
     <Compile Include="OracleGLLoader.cs" />
     <Compile Include="DataModel\AccountingEntry.cs" />
     <Compile Include="DataModel\AccountingFiscalYear.cs" />
@@ -52,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Samples\KSA\GLExtract From GFC_KSA PROD 2.CSV" />
     <None Include="Samples\KSA\GLExtract From GFC_KSA PROD.CSV" />
   </ItemGroup>
   <ItemGroup />

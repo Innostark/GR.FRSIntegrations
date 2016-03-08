@@ -1,4 +1,4 @@
-﻿using Gf.Frs.MT940Loader.DataModels;
+﻿using Gf.Frs.MT940Loader.DataModel;
 
 namespace Gf.Frs.MT940Loader.Handlers
 {

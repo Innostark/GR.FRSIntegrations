@@ -46,6 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="OracleGLLoader.cs" />
+    <Compile Include="DataModel\OracleGL\AccountingEntry.cs" />
+    <Compile Include="DataModel\OracleGL\AccountingFiscalYear.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

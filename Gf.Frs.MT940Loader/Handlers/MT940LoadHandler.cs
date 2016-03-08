@@ -4,7 +4,7 @@ using Gf.Frs.MT940Loader.Helpers;
 using Raptorious.SharpMt940Lib;
 using System.Linq;
 using System.Collections.Generic;
-using Gf.Frs.MT940Loader.DataModels;
+using Gf.Frs.MT940Loader.DataModel;
 
 namespace Gf.Frs.MT940Loader.Handlers
 {
@@ -154,7 +154,7 @@ namespace Gf.Frs.MT940Loader.Handlers
 
         private MT940Balance AddMT940Balance(TransactionBalance transactionBalance, string userId)
         {
-            DataModels.Currency currency = (from c in _dbHandler.DbContext.Currencies
+            DataModel.Currency currency = (from c in _dbHandler.DbContext.Currencies
                                             where c.Name == transactionBalance.Currency.Code
                                             select c).FirstOrDefault();
 

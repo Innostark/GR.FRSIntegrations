@@ -57,37 +57,40 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataModels\OracleGL\AccountingEntry.cs" />
-    <Compile Include="DataModels\OracleGL\AccountingFiscalYear.cs" />
-    <Compile Include="DataModels\AspNetRole.cs">
+    <Compile Include="DataModel\FRSMT940LoaderModel2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FRSMT940LoaderModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\AspNetRole.cs">
       <DependentUpon>FRSMT940LoaderModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataModels\AspNetUser.cs">
+    <Compile Include="DataModel\AspNetUser.cs">
       <DependentUpon>FRSMT940LoaderModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataModels\Currency.cs">
+    <Compile Include="DataModel\Currency.cs">
       <DependentUpon>FRSMT940LoaderModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataModels\Employee.cs">
+    <Compile Include="DataModel\Employee.cs">
       <DependentUpon>FRSMT940LoaderModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataModels\FileContent.cs">
+    <Compile Include="DataModel\FileContent.cs">
       <DependentUpon>FRSMT940LoaderModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataModels\FRSMT940LoaderModel.Context.cs">
+    <Compile Include="DataModel\FRSMT940LoaderModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>FRSMT940LoaderModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataModels\FRSMT940LoaderModel.cs">
+    <Compile Include="DataModel\FRSMT940LoaderModel.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>FRSMT940LoaderModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataModels\FRSMT940LoaderModel.Designer.cs">
+    <Compile Include="DataModel\FRSMT940LoaderModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>FrsIntegrationDbModel.edmx</DependentUpon>
+      <DependentUpon>FRSMT940LoaderModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Handlers\DatabaseHandler.cs" />
     <Compile Include="Faults\FaultClasses.cs" />
@@ -95,37 +98,37 @@
     <Compile Include="Helpers\DotNetHelper.cs" />
     <Compile Include="Helpers\ExceptionExtensions.cs" />
     <Compile Include="Helpers\LoaderConstants.cs" />
-    <Compile Include="DataModels\Load.cs">
+    <Compile Include="DataModel\Load.cs">
       <DependentUpon>FRSMT940LoaderModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataModels\LoadMetaData.cs">
+    <Compile Include="DataModel\LoadMetaData.cs">
       <DependentUpon>FRSMT940LoaderModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataModels\LoadType.cs">
+    <Compile Include="DataModel\LoadType.cs">
       <DependentUpon>FRSMT940LoaderModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataModels\Log.cs">
+    <Compile Include="DataModel\Log.cs">
       <DependentUpon>FRSMT940LoaderModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataModels\MT940Balance.cs">
+    <Compile Include="DataModel\MT940Balance.cs">
       <DependentUpon>FRSMT940LoaderModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataModels\MT940CustomerStatement.cs">
+    <Compile Include="DataModel\MT940CustomerStatement.cs">
       <DependentUpon>FRSMT940LoaderModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataModels\MT940CustomerStatementTransaction.cs">
+    <Compile Include="DataModel\MT940CustomerStatementTransaction.cs">
       <DependentUpon>FRSMT940LoaderModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataModels\MT940Load.cs">
+    <Compile Include="DataModel\MT940Load.cs">
       <DependentUpon>FRSMT940LoaderModel.tt</DependentUpon>
     </Compile>
     <Compile Include="MT940Loader.cs" />
     <Compile Include="Handlers\MT940LoadHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DataModels\Source.cs">
+    <Compile Include="DataModel\Source.cs">
       <DependentUpon>FRSMT940LoaderModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataModels\Status.cs">
+    <Compile Include="DataModel\Status.cs">
       <DependentUpon>FRSMT940LoaderModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -133,25 +136,26 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <EntityDeploy Include="DataModels\FrsIntegrationDbModel.edmx">
+    <EntityDeploy Include="DataModel\FRSMT940LoaderModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>FRSMT940LoaderModel2.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="DataModels\FrsIntegrationDbModel.edmx.diagram">
-      <DependentUpon>FrsIntegrationDbModel.edmx</DependentUpon>
+    <None Include="DataModel\FRSMT940LoaderModel.edmx.diagram">
+      <DependentUpon>FRSMT940LoaderModel.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Samples\KSA\KSA Bank Statement CSV File.xlsx" />
     <None Include="Samples\KSA\SHB 940 message format.xlsx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DataModels\FRSMT940LoaderModel.Context.tt">
+    <Content Include="DataModel\FRSMT940LoaderModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>FrsIntegrationDbModel.edmx</DependentUpon>
+      <DependentUpon>FRSMT940LoaderModel.edmx</DependentUpon>
       <LastGenOutput>FRSMT940LoaderModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="DataModels\FRSMT940LoaderModel.tt">
+    <Content Include="DataModel\FRSMT940LoaderModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>FrsIntegrationDbModel.edmx</DependentUpon>
+      <DependentUpon>FRSMT940LoaderModel.edmx</DependentUpon>
       <LastGenOutput>FRSMT940LoaderModel.cs</LastGenOutput>
     </Content>
     <Content Include="Samples\KSA\940SampleSHB.txt" />

@@ -1,6 +1,6 @@
-﻿namespace Gf.Frs.MT940LoaderService.WinService
+﻿namespace Gf.Frs.LoaderServices.WinService
 {
-    partial class FRSMT940LoaderWinService
+    partial class LoaderWinService
     {
         /// <summary> 
         /// Required designer variable.

@@ -2,7 +2,7 @@
 using NLog.Config;
 using NLog.Targets;
 
-namespace Gf.Frs.MT940LoaderService.Logging
+namespace Gf.Frs.LoaderServices.Logging
 {
     internal static class FRSNLogManager
     {

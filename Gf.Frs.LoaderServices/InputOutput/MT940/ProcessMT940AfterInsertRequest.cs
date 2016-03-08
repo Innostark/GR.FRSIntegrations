@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Gf.Frs.LoaderServices.InputOutput
+namespace Gf.Frs.LoaderServices.InputOutput.MT940
 {
     /// <summary>
     /// Input parameter class for the load MT940 data method call.

@@ -15,7 +15,9 @@ namespace Gf.Frs.MT940Loader
         private string _path;
         private string _headerSeperator;
         private string _trailerSeperator;
-        
+
+        public List<MT940LoaderFault> OperationFaults;
+
         public string Filename
         {
             get
@@ -67,8 +69,6 @@ namespace Gf.Frs.MT940Loader
                 _trailerSeperator = value;
             }
         }
-
-        public List<MT940LoaderFault> OperationFaults;
 
         public MT940Loader()
         {
@@ -183,9 +183,10 @@ namespace Gf.Frs.MT940Loader
             }
 
             return true;
-        }    
-        
-        #region Start - Exception and Fault Methods
+        }
+
+        #region ##START## - Exception and Fault Methods"
+
         private void ClearList<T>(List<T> list)
         {
             if(list!=null)
@@ -220,7 +221,8 @@ namespace Gf.Frs.MT940Loader
             OperationFaults.Add(new MT940LoaderFault(MT940ValidationMessages.LFV_C_LibraryError,
                                                             string.Format(MT940ValidationMessages.LFV_LibraryError, errorMessage)));
         }
-        #endregion End - Exception and Fault Methods
+
+        #endregion ##END## - Exception and Fault Methods
 
     }
 }

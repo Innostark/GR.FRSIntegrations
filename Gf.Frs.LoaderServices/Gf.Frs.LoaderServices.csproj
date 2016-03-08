@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Gf.Frs.MT940LoaderService</RootNamespace>
     <AssemblyName>Gf.Frs.MT940LoaderServices</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -66,16 +66,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FRSNLogManager.cs" />
-    <Compile Include="Wcf\FRSMT940WcfLoaderService.cs" />
+    <Compile Include="Wcf\MT940\FRSMT940WcfLoaderService.cs" />
     <Compile Include="WinService\FRSMT940LoaderWinService.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="WinService\FRSMT940LoaderWinService.Designer.cs">
       <DependentUpon>FRSMT940LoaderWinService.cs</DependentUpon>
     </Compile>
-    <Compile Include="Wcf\IFRSMT940WcfLoaderService.cs" />
-    <Compile Include="InputOutput\ProcessMT940AfterInsertRequest.cs" />
-    <Compile Include="InputOutput\ProcessMT940AfterInsertReturn.cs" />
+    <Compile Include="Wcf\MT940\IFRSMT940WcfLoaderService.cs" />
+    <Compile Include="InputOutput\MT940\ProcessMT940AfterInsertRequest.cs" />
+    <Compile Include="InputOutput\MT940\ProcessMT940AfterInsertReturn.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LoaderServicesWinInstaller.cs">
       <SubType>Component</SubType>
@@ -100,6 +100,10 @@
       <Project>{f58978f5-8273-4746-be9a-e00b12427beb}</Project>
       <Name>Gf.Frs.MT940Loader</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="InputOutput\OracleGL\" />
+    <Folder Include="Wcf\OracleGL\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

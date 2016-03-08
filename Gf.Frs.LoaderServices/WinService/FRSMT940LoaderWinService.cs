@@ -3,7 +3,7 @@ using System.Reflection;
 using System.ServiceModel;
 using System.ServiceProcess;
 using System.Threading;
-using Gf.Frs.LoaderServices.Wcf;
+using Gf.Frs.LoaderServices.Wcf.MT940;
 using Gf.Frs.LoaderServices.Logging;
 using NLog;
 

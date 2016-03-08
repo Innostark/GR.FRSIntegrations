@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Gf.Frs.LoaderServices.InputOutput
+namespace Gf.Frs.LoaderServices.InputOutput.MT940
 {
     [DataContract]
     public class ProcessMT940AfterInsertReturn

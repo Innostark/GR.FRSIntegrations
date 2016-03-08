@@ -1,0 +1,6 @@
+FT - Fund Transfer (Collection)
+TT - Telex Transfer (customer direct checque transfer - 3rd party transfer)
+LD - Loan Transfer Received
+DC - Debit Entry
+SW - Swap Payment
+PD - Past Due Payment

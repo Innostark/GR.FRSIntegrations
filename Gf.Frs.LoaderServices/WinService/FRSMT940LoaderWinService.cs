@@ -3,18 +3,18 @@ using System.Reflection;
 using System.ServiceModel;
 using System.ServiceProcess;
 using System.Threading;
-using Gf.Frs.MT940LoaderService.Wcf;
-using Gf.Frs.MT940LoaderService.Logging;
+using Gf.Frs.LoaderServices.Wcf;
+using Gf.Frs.LoaderServices.Logging;
 using NLog;
 
-namespace Gf.Frs.MT940LoaderService.WinService
+namespace Gf.Frs.LoaderServices.WinService
 {
-    partial class FRSMT940LoaderWinService : ServiceBase
+    partial class LoaderWinService : ServiceBase
     {
         private string _serviceName = "IST FRS.MT940Loader WindowService V1.0.0.0";
 
         public ServiceHost serviceHost = null;
-        public FRSMT940LoaderWinService()
+        public LoaderWinService()
         {
             // Name the Windows Service
             ServiceName = _serviceName;
@@ -40,7 +40,7 @@ namespace Gf.Frs.MT940LoaderService.WinService
             FRSNLogManager.Instance.Log(LogLevel.Info, "Sample informational message, k={0}, l={1}", k, l);
 
             ServiceBase[] servicesToRun = new ServiceBase[] {
-                new FRSMT940LoaderWinService()
+                new LoaderWinService()
             }
             ;
             if (Environment.UserInteractive)

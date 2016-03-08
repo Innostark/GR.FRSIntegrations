@@ -1,4 +1,4 @@
-﻿using Gf.Frs.MT940Loader.Services.InputOutput;
+﻿using Gf.Frs.LoaderServices.InputOutput;
 using Gf.Frs.MT940Loader.Handlers;
 using System.Collections.Generic;
 using Gf.Frs.MT940Loader.Faults;
@@ -8,7 +8,7 @@ using Gf.Frs.MT940Loader;
 using System;
 using DevTrends.WCFDataAnnotations;
 
-namespace Gf.Frs.MT940LoaderService.Wcf
+namespace Gf.Frs.LoaderServices.Wcf
 {
     [ValidateDataAnnotationsBehavior]
     public class FRSMT940WcfLoaderService : IFRSMT940WcfLoaderService

@@ -2,17 +2,17 @@
 using System.Configuration.Install;
 using System.ServiceProcess;
 
-namespace Gf.Frs.MT940Loader.Services
+namespace Gf.Frs.LoaderServices
 {
     // Provide the ProjectInstaller class which allows 
     // the service to be installed by the Installutil.exe tool
     [RunInstaller(true)]
-    public class MT940LoaderWinServiceInstaller : Installer
+    public class LoaderServicesWinInstaller : Installer
     {
         private ServiceProcessInstaller process;
         private ServiceInstaller service;
 
-        public MT940LoaderWinServiceInstaller()
+        public LoaderServicesWinInstaller()
         {
             process = new ServiceProcessInstaller();
             process.Account = ServiceAccount.LocalSystem;

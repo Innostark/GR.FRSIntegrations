@@ -1,7 +1,7 @@
 ﻿using System.ServiceModel;
-using Gf.Frs.MT940Loader.Services.InputOutput;
+using Gf.Frs.LoaderServices.InputOutput;
 
-namespace Gf.Frs.MT940LoaderService.Wcf
+namespace Gf.Frs.LoaderServices.Wcf
 {
     /// <summary>
     /// Service contract for the FRS MT940 WCF Loader service

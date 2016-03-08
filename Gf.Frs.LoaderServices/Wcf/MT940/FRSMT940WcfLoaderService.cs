@@ -7,6 +7,7 @@ using Gf.Frs.MT940Loader.Helpers;
 using Gf.Frs.MT940Loader;
 using System;
 using DevTrends.WCFDataAnnotations;
+using Gf.Frs.MT940Loader.DataModels;
 
 namespace Gf.Frs.LoaderServices.Wcf.MT940
 {

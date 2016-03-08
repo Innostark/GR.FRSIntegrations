@@ -1,4 +1,6 @@
-﻿namespace Gf.Frs.MT940Loader.Handlers
+﻿using Gf.Frs.MT940Loader.DataModels;
+
+namespace Gf.Frs.MT940Loader.Handlers
 {
     internal class DatabaseHandler
     {

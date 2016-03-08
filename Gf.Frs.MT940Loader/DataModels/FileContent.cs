@@ -7,37 +7,29 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Gf.Frs.MT940Loader
+namespace Gf.Frs.MT940Loader.DataModels
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class LoadMetaData
+    public partial class FileContent
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public LoadMetaData()
+        public FileContent()
         {
-            this.Loads = new HashSet<Load>();
+            this.MT940Load = new HashSet<MT940Load>();
         }
     
-        public byte LoadMetaDataId { get; set; }
-        public byte LoadTypeId { get; set; }
-        public byte SourceId { get; set; }
-        public string Header { get; set; }
-        public string Trailer { get; set; }
-        public string Name { get; set; }
-        public byte CurrencyId { get; set; }
+        public long FileContentId { get; set; }
+        public byte[] FileContent1 { get; set; }
+        public string FileContentBase64 { get; set; }
         public string Description { get; set; }
         public string CreatedBy { get; set; }
         public System.DateTime CreatedOn { get; set; }
         public string ModifiedBy { get; set; }
         public System.DateTime ModifiedOn { get; set; }
-        public byte StatusId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Load> Loads { get; set; }
-        public virtual LoadType LoadType { get; set; }
-        public virtual Source Source { get; set; }
-        public virtual Status Status { get; set; }
+        public virtual ICollection<MT940Load> MT940Load { get; set; }
     }
 }

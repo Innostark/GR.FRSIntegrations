@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using Gf.Frs.MT940Loader.Faults;
 using System.ServiceModel;
 using Gf.Frs.MT940Loader.Helpers;
+using Gf.Frs.MT940Loader;
 using System;
 using DevTrends.WCFDataAnnotations;
-using Gf.Frs.MT940Loader;
 
-namespace Gf.Frs.LoaderServices.Wcf.MT940
+namespace Gf.Frs.LoaderServices.Wcf.OracleGL
 {
     [ValidateDataAnnotationsBehavior]
-    public class FrsMT940WcfLoaderService : IFrsMT940WcfLoaderService
+    public class FRSMT940WcfLoaderService : IFRSMT940WcfLoaderService
     {
         public ProcessMT940AfterInsertReturn LoadMT940AfterInsert(LoadMT940AfterInsertRequest request)
         {

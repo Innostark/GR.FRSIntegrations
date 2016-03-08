@@ -66,14 +66,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FRSNLogManager.cs" />
-    <Compile Include="Wcf\MT940\FRSMT940WcfLoaderService.cs" />
+    <Compile Include="Wcf\MT940\FrsMT940WcfLoaderService.cs" />
+    <Compile Include="Wcf\OracleGL\FRSOracleGLWcfLoaderService.cs" />
+    <Compile Include="Wcf\OracleGL\IFrsOracleGLWcfLoaderServiceI.cs" />
     <Compile Include="WinService\FRSMT940LoaderWinService.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="WinService\FRSMT940LoaderWinService.Designer.cs">
       <DependentUpon>FRSMT940LoaderWinService.cs</DependentUpon>
     </Compile>
-    <Compile Include="Wcf\MT940\IFRSMT940WcfLoaderService.cs" />
+    <Compile Include="Wcf\MT940\IFrsMT940WcfLoaderService.cs" />
     <Compile Include="InputOutput\MT940\ProcessMT940AfterInsertRequest.cs" />
     <Compile Include="InputOutput\MT940\ProcessMT940AfterInsertReturn.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -103,7 +105,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="InputOutput\OracleGL\" />
-    <Folder Include="Wcf\OracleGL\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

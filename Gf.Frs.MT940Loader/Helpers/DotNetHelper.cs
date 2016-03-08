@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Text;
 using Raptorious.SharpMt940Lib;
-using Gf.Frs.MT940Loader.DataModel;
+using Gf.Frs.MT940Loader;
 
 namespace Gf.Frs.MT940Loader.Helpers
 {

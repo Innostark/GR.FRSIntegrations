@@ -1,5 +1,5 @@
 ﻿
-namespace Gf.Frs.MT940Loader.DataModels.OracleGL
+namespace Gf.Frs.MT940Loader.DataModel
 {
     public enum AccountingFiscalYear : uint
     {

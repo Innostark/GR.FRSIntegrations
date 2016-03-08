@@ -7,25 +7,24 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Gf.Frs.MT940Loader.DataModel
+namespace Gf.Frs.MT940Loader
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Source
+    public partial class Employee
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Source()
+        public Employee()
         {
-            this.LoadMetaDatas = new HashSet<LoadMetaData>();
+            this.AspNetUsers = new HashSet<AspNetUser>();
         }
     
-        public byte Value { get; set; }
-        public string Name { get; set; }
-        public byte StatusId { get; set; }
+        public long EmployeeId { get; set; }
+        public string EmployeeName { get; set; }
+        public string Designation { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<LoadMetaData> LoadMetaDatas { get; set; }
-        public virtual Status Status { get; set; }
+        public virtual ICollection<AspNetUser> AspNetUsers { get; set; }
     }
 }

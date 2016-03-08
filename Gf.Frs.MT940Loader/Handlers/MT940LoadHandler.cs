@@ -4,7 +4,7 @@ using Gf.Frs.MT940Loader.Helpers;
 using Raptorious.SharpMt940Lib;
 using System.Linq;
 using System.Collections.Generic;
-using Gf.Frs.MT940Loader.DataModel;
+using Gf.Frs.MT940Loader;
 
 namespace Gf.Frs.MT940Loader.Handlers
 {
@@ -154,7 +154,7 @@ namespace Gf.Frs.MT940Loader.Handlers
 
         private MT940Balance AddMT940Balance(TransactionBalance transactionBalance, string userId)
         {
-            DataModel.Currency currency = (from c in _dbHandler.DbContext.Currencies
+            Currency currency = (from c in _dbHandler.DbContext.Currencies
                                             where c.Name == transactionBalance.Currency.Code
                                             select c).FirstOrDefault();
 
@@ -192,14 +192,27 @@ namespace Gf.Frs.MT940Loader.Handlers
         public List<MT940LoaderFault> ValidateLoadForNullOrEmpty(long id)
         {
             List<MT940LoaderFault> faults = new List<MT940LoaderFault>();
-            Load load = _dbHandler.GetLoadById(id);
+            Load load = null;
+
+            try
+            {
+                load = _dbHandler.GetLoadById(id);
+            }
+            catch(Exception ex)
+            {
+                faults.Add(new MT940LoaderFault(FRSLoadValidationFaults.NRF_C_NoRecordFoundWithId,
+                                                string.Format(FRSLoadValidationFaults.NRF_NoRecordFoundWithId, "Load", "LoadId", (id.ToString() + " Exception Details: " + ex.Message))));
+            }
 
             //Validate the Load record
             //If no load record was returned
             if (load == null)
             {
-                faults.Add(new MT940LoaderFault(FRSLoadValidationFaults.NRF_C_NoRecordFoundWithId,
-                                                string.Format(FRSLoadValidationFaults.NRF_NoRecordFoundWithId, "Load", "LoadId", id.ToString())));
+                if (faults.Count == 0)
+                {
+                    faults.Add(new MT940LoaderFault(FRSLoadValidationFaults.NRF_C_NoRecordFoundWithId,
+                                                    string.Format(FRSLoadValidationFaults.NRF_NoRecordFoundWithId, "Load", "LoadId", id.ToString())));
+                }
             }
             else
             {

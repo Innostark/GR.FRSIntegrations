@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Gf.Frs.MT940Loader.DataModels.OracleGL
+namespace Gf.Frs.MT940Loader.DataModel
 {
     internal class AccountingEntry
     {

@@ -7,15 +7,15 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Gf.Frs.MT940Loader.DataModel
+namespace Gf.Frs.MT940Loader
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class LoadType
+    public partial class Source
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public LoadType()
+        public Source()
         {
             this.LoadMetaDatas = new HashSet<LoadMetaData>();
         }

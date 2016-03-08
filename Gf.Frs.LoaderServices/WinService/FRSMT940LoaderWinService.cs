@@ -61,7 +61,7 @@ namespace Gf.Frs.LoaderServices.WinService
             }
 
             // Create a ServiceHost for the FRSMT940LoaderWCFService type and provide the base address.
-            serviceHost = new ServiceHost(typeof(FRSMT940WcfLoaderService));
+            serviceHost = new ServiceHost(typeof(FrsMT940WcfLoaderService));
 
             // Open the ServiceHostBase to create listeners and start listening for messages.
             serviceHost.Open();

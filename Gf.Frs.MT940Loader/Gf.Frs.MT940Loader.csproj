@@ -93,11 +93,8 @@
       <DependentUpon>FRSMT940LoaderModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Handlers\DatabaseHandler.cs" />
-    <Compile Include="Faults\FaultClasses.cs" />
-    <Compile Include="Faults\MT940LoaderFault.cs" />
+    <Compile Include="Fault\FaultClasses.cs" />
     <Compile Include="Helpers\DotNetHelper.cs" />
-    <Compile Include="Helpers\ExceptionExtensions.cs" />
-    <Compile Include="Helpers\LoaderConstants.cs" />
     <Compile Include="Load.cs">
       <DependentUpon>FRSMT940LoaderModel.tt</DependentUpon>
     </Compile>
@@ -122,7 +119,7 @@
     <Compile Include="MT940Load.cs">
       <DependentUpon>FRSMT940LoaderModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="MT940Loader.cs" />
+    <Compile Include="Loader\MT940LoaderLibrary.cs" />
     <Compile Include="Handlers\MT940LoadHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source.cs">
@@ -172,7 +169,12 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Gf.Frs.IntegrationCommon\Gf.Frs.IntegrationCommon.csproj">
+      <Project>{3214699c-452e-47ae-92d6-45b49507a0c4}</Project>
+      <Name>Gf.Frs.IntegrationCommon</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

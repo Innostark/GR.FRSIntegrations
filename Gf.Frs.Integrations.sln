@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gf.Frs.OracleGLLoader", "Gf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gf.Frs.ExceptionHandling", "Gf.Frs.ExceptionHandling\Gf.Frs.ExceptionHandling.csproj", "{5A6ACD2D-0701-4E38-99B7-65CC4E6CB8E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gf.Frs.IntegrationCommon", "Gf.Frs.IntegrationCommon\Gf.Frs.IntegrationCommon.csproj", "{3214699C-452E-47AE-92D6-45B49507A0C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{5A6ACD2D-0701-4E38-99B7-65CC4E6CB8E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A6ACD2D-0701-4E38-99B7-65CC4E6CB8E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A6ACD2D-0701-4E38-99B7-65CC4E6CB8E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3214699C-452E-47AE-92D6-45B49507A0C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3214699C-452E-47AE-92D6-45B49507A0C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3214699C-452E-47AE-92D6-45B49507A0C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3214699C-452E-47AE-92D6-45B49507A0C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,19 +1,19 @@
 ﻿using Gf.Frs.LoaderServices.InputOutput.MT940;
 using Gf.Frs.MT940Loader.Handlers;
 using System.Collections.Generic;
-using Gf.Frs.MT940Loader.Faults;
 using System.ServiceModel;
-using Gf.Frs.MT940Loader.Helpers;
 using System;
 using DevTrends.WCFDataAnnotations;
 using Gf.Frs.MT940Loader;
+using Gf.Frs.IntegrationCommon.Fault;
+using Gf.Frs.IntegrationCommon.Helpers;
 
 namespace Gf.Frs.LoaderServices.Wcf.MT940
 {
     [ValidateDataAnnotationsBehavior]
     public class FrsMT940WcfLoaderService : IFrsMT940WcfLoaderService
     {
-        public ProcessMT940AfterInsertReturn LoadMT940AfterInsert(LoadMT940AfterInsertRequest request)
+        public LoadMT940AfterInsertResponse LoadMT940AfterInsert(LoadMT940AfterInsertRequest request)
         {
             if(string.IsNullOrEmpty(request.UserId))
             {
@@ -24,7 +24,7 @@ namespace Gf.Frs.LoaderServices.Wcf.MT940
             }
 
             MT940LoadHandler mt940LoadHandler = new MT940LoadHandler();
-            List<MT940LoaderFault> faults = new List<MT940LoaderFault>();
+            List<LoaderFault> faults = new List<LoaderFault>();
 
             #region Validation of request Load Id
             try

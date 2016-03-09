@@ -1,6 +1,6 @@
-﻿namespace Gf.Frs.MT940Loader.Faults
+﻿namespace Gf.Frs.IntegrationCommon.Fault
 {
-    public class MT940LoaderFault
+    public class LoaderFault
     {
         private int _code;
         private string _message;
@@ -31,7 +31,7 @@
             }
         }
 
-        public MT940LoaderFault(int code, string message)
+        public LoaderFault(int code, string message)
         {
             _code = code;
             _message = message;

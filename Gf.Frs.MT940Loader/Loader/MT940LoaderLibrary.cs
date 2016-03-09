@@ -1,4 +1,5 @@
-﻿using Gf.Frs.MT940Loader.Faults;
+﻿using Gf.Frs.IntegrationCommon.Fault;
+using Gf.Frs.MT940Loader.Fault;
 using Raptorious.SharpMt940Lib;
 using Raptorious.SharpMt940Lib.Mt940Format;
 using System;
@@ -7,16 +8,16 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 
-namespace Gf.Frs.MT940Loader
+namespace Gf.Frs.MT940Loader.Loader
 {
-    internal class MT940Loader
+    internal class MT940LoaderLibrary
     {
         private string _filename;
         private string _path;
         private string _headerSeperator;
         private string _trailerSeperator;
 
-        public List<MT940LoaderFault> OperationFaults;
+        public List<LoaderFault> OperationFaults;
 
         public string Filename
         {
@@ -70,12 +71,12 @@ namespace Gf.Frs.MT940Loader
             }
         }
 
-        public MT940Loader()
+        public MT940LoaderLibrary()
         {
-            OperationFaults = new List<MT940LoaderFault>();
+            OperationFaults = new List<LoaderFault>();
         }
 
-        public MT940Loader(string filePath, string headerSeperator, string trailerSeperator)
+        public MT940LoaderLibrary(string filePath, string headerSeperator, string trailerSeperator)
         {
             if (string.IsNullOrEmpty(headerSeperator))
                 throw new ArgumentException(MT940ValidationMessages.HNF_HeaderSeparatorCannotBeNullOrEmpty, "headerSeperator");
@@ -204,13 +205,13 @@ namespace Gf.Frs.MT940Loader
         private void AddFilePhysicalValidationFault()
         {
             ClearList(OperationFaults);
-            OperationFaults.Add(new MT940LoaderFault(MT940ValidationMessages.FNF_C_FileNotFoundOnPath, MT940ValidationMessages.FNF_FileNotFoundOnPath));
+            OperationFaults.Add(new LoaderFault(MT940ValidationMessages.FNF_C_FileNotFoundOnPath, MT940ValidationMessages.FNF_FileNotFoundOnPath));
         }
 
         private void AddFileLibraryInvalidation(Exception ex)
         {
             ClearList(OperationFaults);
-            OperationFaults.Add(new MT940LoaderFault(MT940ValidationMessages.LFV_C_FileFailedLibraryValidationAndLoadToObject,
+            OperationFaults.Add(new LoaderFault(MT940ValidationMessages.LFV_C_FileFailedLibraryValidationAndLoadToObject,
                                                             MT940ValidationMessages.LFV_FileFailedLibraryValidationAndLoadToObject));
             string errorMessage = ex.Message;
             if (ex.InnerException != null && !String.IsNullOrEmpty(ex.InnerException.Message))
@@ -218,7 +219,7 @@ namespace Gf.Frs.MT940Loader
                 errorMessage += Environment.NewLine;
                 errorMessage += "Error details: " + ex.InnerException.Message;
             }
-            OperationFaults.Add(new MT940LoaderFault(MT940ValidationMessages.LFV_C_LibraryError,
+            OperationFaults.Add(new LoaderFault(MT940ValidationMessages.LFV_C_LibraryError,
                                                             string.Format(MT940ValidationMessages.LFV_LibraryError, errorMessage)));
         }
 

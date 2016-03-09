@@ -20,19 +20,17 @@ namespace Gf.Frs.ConsoleTester
 
             csv.Configuration.HasHeaderRecord = true;
             csv.Configuration.RegisterClassMap<AccountingEntryMap>();
-            int i = 0;
-            while (csv.Read())
-            {
-                i++;
-                var row = csv.GetRecord<AccountingEntry>();
-            }
+            //int i = 0;
+            //while (csv.Read())
+            //{
+            //    i++;
+            //    var row = csv.GetRecord<AccountingEntry>();
+            //}
 
 
-            //var records = csv.GetRecords<AccountingEntry>().ToList();
+            var records = csv.GetRecords<AccountingEntry>().ToList();
 
-
-
-
+            var q = 123;
         }
     }
 }

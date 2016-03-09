@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace Gf.Frs.MT940Loader.Helpers
+namespace Gf.Frs.IntegrationCommon.Helpers
 {
     #region **START** - Exception Helpers
 

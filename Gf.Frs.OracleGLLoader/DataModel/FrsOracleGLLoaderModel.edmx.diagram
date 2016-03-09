@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="96d2fea16ee84da08ee8b4e96405e823" Name="Diagram1" ShowGrid="true" DisplayType="true">
+        <EntityTypeShape EntityType="FrsOracleGLLoader.DBModel.Category" Width="1.5" PointX="2.5" PointY="14.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrsOracleGLLoader.DBModel.CategoryLog" Width="1.5" PointX="8.5" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrsOracleGLLoader.DBModel.FileContent" Width="2.5" PointX="1.75" PointY="0.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrsOracleGLLoader.DBModel.FiscalYear" Width="2.625" PointX="11.625" PointY="0.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrsOracleGLLoader.DBModel.Load" Width="3.5" PointX="3.75" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrsOracleGLLoader.DBModel.LoadMetaData" Width="3.25" PointX="20.875" PointY="11" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrsOracleGLLoader.DBModel.LoadType" Width="2.75" PointX="21.875" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrsOracleGLLoader.DBModel.Log" Width="1.5" PointX="14.25" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrsOracleGLLoader.DBModel.OracleGLLoad" Width="2.625" PointX="1.625" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrsOracleGLLoader.DBModel.Status" Width="3.125" PointX="11.25" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrsOracleGLLoader.DBModel.OracleGLEntry" Width="3.875" PointX="20.375" PointY="1.25" IsExpanded="true" />
+        <AssociationConnector Association="FrsOracleGLLoader.DBModel.FK_CategoryLog_Category" ManuallyRouted="false" />
+        <AssociationConnector Association="FrsOracleGLLoader.DBModel.FK_CategoryLog_Log" ManuallyRouted="false" />
+        <AssociationConnector Association="FrsOracleGLLoader.DBModel.FK_OracleGLLoad_FileContent" ManuallyRouted="false" />
+        <AssociationConnector Association="FrsOracleGLLoader.DBModel.FK_OracleGLEntry_FiscalYear" ManuallyRouted="false" />
+        <AssociationConnector Association="FrsOracleGLLoader.DBModel.FK_Load_LoadMetaData" ManuallyRouted="false" />
+        <AssociationConnector Association="FrsOracleGLLoader.DBModel.FK_Load_OracleGLLoad" ManuallyRouted="false" />
+        <AssociationConnector Association="FrsOracleGLLoader.DBModel.FK_LoadMetaData_LoadType" ManuallyRouted="false" />
+        <AssociationConnector Association="FrsOracleGLLoader.DBModel.FK_LoadMetaData_Status" ManuallyRouted="false" >
+        </AssociationConnector>
+        <AssociationConnector Association="FrsOracleGLLoader.DBModel.FK_LoadType_Status" ManuallyRouted="false" />
+        <AssociationConnector Association="FrsOracleGLLoader.DBModel.FK_OracleGLEntry_OracleGLLoad" ManuallyRouted="false" />
+        <AssociationConnector Association="FrsOracleGLLoader.DBModel.FK_OracleGLLoad_Status" ManuallyRouted="false" />
+        <AssociationConnector Association="FrsOracleGLLoader.DBModel.FK_OracleGLEntry_Status" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

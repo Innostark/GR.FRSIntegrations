@@ -66,9 +66,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FRSNLogManager.cs" />
+    <Compile Include="InputOutput\OracleGL\LoadOracleGLAfterInsertRequest.cs" />
+    <Compile Include="InputOutput\OracleGL\LoadOracleGLAfterInsertResponse.cs" />
     <Compile Include="Wcf\MT940\FrsMT940WcfLoaderService.cs" />
-    <Compile Include="Wcf\OracleGL\FRSOracleGLWcfLoaderService.cs" />
-    <Compile Include="Wcf\OracleGL\IFrsOracleGLWcfLoaderServiceI.cs" />
+    <Compile Include="Wcf\OracleGL\FrsOracleGLWcfLoaderService.cs" />
+    <Compile Include="Wcf\OracleGL\IFrsOracleGLWcfLoaderService.cs" />
     <Compile Include="WinService\FRSMT940LoaderWinService.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -76,8 +78,8 @@
       <DependentUpon>FRSMT940LoaderWinService.cs</DependentUpon>
     </Compile>
     <Compile Include="Wcf\MT940\IFrsMT940WcfLoaderService.cs" />
-    <Compile Include="InputOutput\MT940\ProcessMT940AfterInsertRequest.cs" />
-    <Compile Include="InputOutput\MT940\ProcessMT940AfterInsertReturn.cs" />
+    <Compile Include="InputOutput\MT940\LoadMT940AfterInsertRequest.cs" />
+    <Compile Include="InputOutput\MT940\LoadMT940AfterInsertResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LoaderServicesWinInstaller.cs">
       <SubType>Component</SubType>
@@ -98,14 +100,16 @@
     <Content Include="How To.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Gf.Frs.IntegrationCommon\Gf.Frs.IntegrationCommon.csproj">
+      <Project>{3214699c-452e-47ae-92d6-45b49507a0c4}</Project>
+      <Name>Gf.Frs.IntegrationCommon</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Gf.Frs.MT940Loader\Gf.Frs.MT940Loader.csproj">
       <Project>{f58978f5-8273-4746-be9a-e00b12427beb}</Project>
       <Name>Gf.Frs.MT940Loader</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="InputOutput\OracleGL\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

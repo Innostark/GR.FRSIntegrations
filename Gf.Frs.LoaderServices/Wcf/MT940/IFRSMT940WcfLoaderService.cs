@@ -10,6 +10,6 @@ namespace Gf.Frs.LoaderServices.Wcf.MT940
     public interface IFrsMT940WcfLoaderService
     {
         [OperationContract]
-        ProcessMT940AfterInsertReturn LoadMT940AfterInsert(LoadMT940AfterInsertRequest input);
+        LoadMT940AfterInsertResponse LoadMT940AfterInsert(LoadMT940AfterInsertRequest request);
     }
 }

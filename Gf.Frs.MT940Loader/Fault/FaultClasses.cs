@@ -1,4 +1,4 @@
-﻿namespace Gf.Frs.MT940Loader.Faults
+﻿namespace Gf.Frs.MT940Loader.Fault
 {
     public class MT940ValidationMessages
     {

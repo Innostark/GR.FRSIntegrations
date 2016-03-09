@@ -5,7 +5,7 @@ namespace Gf.Frs.LoaderServices.InputOutput.MT940
     /// <summary>
     /// Input parameter class for the load MT940 data method call.
     /// </summary>
-    [DataContract( Name = "LoadMT940AfterInsertInput", Namespace = "http://www.gulffinance.com.sa/frs/v1/mt940/operations/loadafterinsert/request")]
+    [DataContract( Name = "LoadMT940AfterInsertRequest", Namespace = "http://www.gulffinance.com.sa/frs/v1/mt940/operations/loadafterinsert/request")]
     public class LoadMT940AfterInsertRequest
     {
         /// <summary>

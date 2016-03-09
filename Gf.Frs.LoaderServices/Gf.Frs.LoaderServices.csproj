@@ -108,6 +108,10 @@
       <Project>{f58978f5-8273-4746-be9a-e00b12427beb}</Project>
       <Name>Gf.Frs.MT940Loader</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Gf.Frs.OracleGLLoader\Gf.Frs.OracleGLLoader.csproj">
+      <Project>{7bf94b0a-026d-4196-9832-70ce9789e377}</Project>
+      <Name>Gf.Frs.OracleGLLoader</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

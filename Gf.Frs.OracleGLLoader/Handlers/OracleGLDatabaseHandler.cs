@@ -1,10 +1,12 @@
-﻿namespace Gf.Frs.MT940Loader.Handlers
-{
-    internal class DatabaseHandler
-    {
-        private FRSMT940LoaderContext _dbContext;
+﻿using Gf.Frs.OracleGLLoader.DataModel;
 
-        internal FRSMT940LoaderContext DbContext
+namespace Gf.Frs.OracleGLLoader.Handlers
+{
+    internal class OracleGLDatabaseHandler
+    {
+        private FrsOracleGLLoaderContext _dbContext;
+
+        internal FrsOracleGLLoaderContext DbContext
         {
             get
             {
@@ -17,9 +19,9 @@
             }
         }
 
-        public DatabaseHandler()
+        public OracleGLDatabaseHandler()
         {
-            _dbContext = new FRSMT940LoaderContext();
+            _dbContext = new FrsOracleGLLoaderContext();
         }
 
         public Load GetLoadById(long loadId)
@@ -32,9 +34,9 @@
             return _dbContext.LoadMetaDatas.Find(id);
         }
 
-        public MT940Load GetMT940LoadById(long id)
+        public OracleGLLoad GetOracleGLLoadById(long id)
         {
-            return _dbContext.MT940Load.Find(id);
+            return _dbContext.OracleGLLoads.Find(id);
         }
 
         public void PreDispose()

@@ -219,8 +219,8 @@ namespace Gf.Frs.MT940Loader.Loader
                 errorMessage += Environment.NewLine;
                 errorMessage += "Error details: " + ex.InnerException.Message;
             }
-            OperationFaults.Add(new LoaderFault(MT940ValidationMessages.LFV_C_LibraryError,
-                                                            string.Format(MT940ValidationMessages.LFV_LibraryError, errorMessage)));
+            OperationFaults.Add(new LoaderFault(FRSValidationMessages.LFV_C_LibraryError,
+                                                string.Format(FRSValidationMessages.LFV_LibraryError, errorMessage)));
         }
 
         #endregion ##END## - Exception and Fault Methods

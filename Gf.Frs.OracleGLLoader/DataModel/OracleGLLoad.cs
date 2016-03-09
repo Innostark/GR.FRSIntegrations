@@ -36,8 +36,8 @@ namespace Gf.Frs.OracleGLLoader.DataModel
         public virtual FileContent FileContent { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Load> Loads { get; set; }
+        public virtual Status Status { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OracleGLEntry> OracleGLEntries { get; set; }
-        public virtual Status Status { get; set; }
     }
 }

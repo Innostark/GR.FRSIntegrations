@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="FrsOracleGLLoader.DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FrsOracleGLLoader.DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="CategoryID" />
@@ -47,6 +47,7 @@
           <Property Name="LoadId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LoadMetaDataId" Type="tinyint" Nullable="false" />
           <Property Name="MT940LoadId" Type="bigint" />
+          <Property Name="OracleGLLoadId" Type="bigint" />
           <Property Name="Name" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="Start" Type="datetime" Nullable="false" />
           <Property Name="Finish" Type="datetime" />
@@ -56,7 +57,6 @@
           <Property Name="CreatedOn" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="ModifiedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="ModifiedOn" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="OracleGLLoadId" Type="bigint" />
         </EntityType>
         <EntityType Name="LoadMetaData">
           <Key>
@@ -103,18 +103,9 @@
           <Property Name="Message" Type="nvarchar" MaxLength="1500" />
           <Property Name="FormattedMessage" Type="ntext" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'GF-FRS-V.2.dbo.OracleGLEntry' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="OracleGLEntry">
           <Key>
             <PropertyRef Name="OracleGLEntryId" />
-            <PropertyRef Name="OracleGLLoadId" />
-            <PropertyRef Name="UniqueReferenceKey" />
-            <PropertyRef Name="StatusId" />
-            <PropertyRef Name="CreatedBy" />
-            <PropertyRef Name="CreatedOn" />
-            <PropertyRef Name="ModifiedBy" />
-            <PropertyRef Name="ModifiedOn" />
           </Key>
           <Property Name="OracleGLEntryId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="OracleGLLoadId" Type="bigint" Nullable="false" />
@@ -140,9 +131,9 @@ warning 6002: The table/view 'GF-FRS-V.2.dbo.OracleGLEntry' does not have a prim
           <Property Name="JELastUpdateDate" Type="datetime2" Precision="7" />
           <Property Name="StatusId" Type="tinyint" Nullable="false" />
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="CreatedOn" Type="datetime2" Precision="7" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="CreatedOn" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="ModifiedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="ModifiedOn" Type="datetime2" Precision="7" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="ModifiedOn" Type="datetime2" Precision="7" Nullable="false" />
         </EntityType>
         <EntityType Name="OracleGLLoad">
           <Key>
@@ -336,39 +327,9 @@ warning 6002: The table/view 'GF-FRS-V.2.dbo.OracleGLEntry' does not have a prim
           <EntitySet Name="LoadMetaData" EntityType="Self.LoadMetaData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LoadType" EntityType="Self.LoadType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OracleGLEntry" EntityType="Self.OracleGLEntry" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OracleGLLoad" EntityType="Self.OracleGLLoad" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="OracleGLEntry" EntityType="Self.OracleGLEntry" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [OracleGLEntry].[OracleGLEntryId] AS [OracleGLEntryId], 
-    [OracleGLEntry].[OracleGLLoadId] AS [OracleGLLoadId], 
-    [OracleGLEntry].[UniqueReferenceKey] AS [UniqueReferenceKey], 
-    [OracleGLEntry].[JournalEntryHeaderNumber] AS [JournalEntryHeaderNumber], 
-    [OracleGLEntry].[JournalEntryDescription] AS [JournalEntryDescription], 
-    [OracleGLEntry].[LineNumber] AS [LineNumber], 
-    [OracleGLEntry].[LineDescription] AS [LineDescription], 
-    [OracleGLEntry].[AccountNumber] AS [AccountNumber], 
-    [OracleGLEntry].[AccountDescription] AS [AccountDescription], 
-    [OracleGLEntry].[SubAccountDescription] AS [SubAccountDescription], 
-    [OracleGLEntry].[EffectiveDate] AS [EffectiveDate], 
-    [OracleGLEntry].[EntrySource] AS [EntrySource], 
-    [OracleGLEntry].[EnteredDr] AS [EnteredDr], 
-    [OracleGLEntry].[EnteredCr] AS [EnteredCr], 
-    [OracleGLEntry].[AccountedDr] AS [AccountedDr], 
-    [OracleGLEntry].[AccountedCr] AS [AccountedCr], 
-    [OracleGLEntry].[Currency] AS [Currency], 
-    [OracleGLEntry].[ExchangeRate] AS [ExchangeRate], 
-    [OracleGLEntry].[Period] AS [Period], 
-    [OracleGLEntry].[FiscalYearId] AS [FiscalYearId], 
-    [OracleGLEntry].[JECreationDate] AS [JECreationDate], 
-    [OracleGLEntry].[JELastUpdateDate] AS [JELastUpdateDate], 
-    [OracleGLEntry].[StatusId] AS [StatusId], 
-    [OracleGLEntry].[CreatedBy] AS [CreatedBy], 
-    [OracleGLEntry].[CreatedOn] AS [CreatedOn], 
-    [OracleGLEntry].[ModifiedBy] AS [ModifiedBy], 
-    [OracleGLEntry].[ModifiedOn] AS [ModifiedOn]
-    FROM [dbo].[OracleGLEntry] AS [OracleGLEntry]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_CategoryLog_Category" Association="Self.FK_CategoryLog_Category">
             <End Role="Category" EntitySet="Category" />
             <End Role="CategoryLog" EntitySet="CategoryLog" />
@@ -418,8 +379,7 @@ warning 6002: The table/view 'GF-FRS-V.2.dbo.OracleGLEntry' does not have a prim
             <End Role="OracleGLLoad" EntitySet="OracleGLLoad" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="FrsOracleGLLoader.DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -461,7 +421,7 @@ warning 6002: The table/view 'GF-FRS-V.2.dbo.OracleGLEntry' does not have a prim
           </Key>
           <Property Name="Value" Type="Int16" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="OracleGLEntries" Relationship="Self.FK_OracleGLEntry_FiscalYear" FromRole="FiscalYear" ToRole="OracleGLEntry" />
+          <NavigationProperty Name="OracleGLEntries" Relationship="FrsOracleGLLoader.DBModel.FK_OracleGLEntry_FiscalYear" FromRole="FiscalYear" ToRole="OracleGLEntry" />
         </EntityType>
         <EntityType Name="Load">
           <Key>
@@ -551,8 +511,8 @@ warning 6002: The table/view 'GF-FRS-V.2.dbo.OracleGLEntry' does not have a prim
           <Property Name="StatusId" Type="Byte" Nullable="false" />
           <NavigationProperty Name="FileContent" Relationship="Self.FK_OracleGLLoad_FileContent" FromRole="OracleGLLoad" ToRole="FileContent" />
           <NavigationProperty Name="Loads" Relationship="Self.FK_Load_OracleGLLoad" FromRole="OracleGLLoad" ToRole="Load" />
-          <NavigationProperty Name="OracleGLEntries" Relationship="Self.FK_OracleGLEntry_OracleGLLoad" FromRole="OracleGLLoad" ToRole="OracleGLEntry" />
           <NavigationProperty Name="Status" Relationship="Self.FK_OracleGLLoad_Status" FromRole="OracleGLLoad" ToRole="Status" />
+          <NavigationProperty Name="OracleGLEntries" Relationship="FrsOracleGLLoader.DBModel.FK_OracleGLEntry_OracleGLLoad" FromRole="OracleGLLoad" ToRole="OracleGLEntry" />
         </EntityType>
         <EntityType Name="Status">
           <Key>
@@ -563,49 +523,7 @@ warning 6002: The table/view 'GF-FRS-V.2.dbo.OracleGLEntry' does not have a prim
           <NavigationProperty Name="LoadMetaDatas" Relationship="Self.FK_LoadMetaData_Status" FromRole="Status" ToRole="LoadMetaData" />
           <NavigationProperty Name="LoadTypes" Relationship="Self.FK_LoadType_Status" FromRole="Status" ToRole="LoadType" />
           <NavigationProperty Name="OracleGLLoads" Relationship="Self.FK_OracleGLLoad_Status" FromRole="Status" ToRole="OracleGLLoad" />
-          <NavigationProperty Name="OracleGLEntries" Relationship="Self.FK_OracleGLEntry_Status" FromRole="Status" ToRole="OracleGLEntry" />
-        </EntityType>
-        <EntityType Name="OracleGLEntry">
-          <Key>
-            <PropertyRef Name="OracleGLEntryId" />
-            <PropertyRef Name="OracleGLLoadId" />
-            <PropertyRef Name="UniqueReferenceKey" />
-            <PropertyRef Name="StatusId" />
-            <PropertyRef Name="CreatedBy" />
-            <PropertyRef Name="CreatedOn" />
-            <PropertyRef Name="ModifiedBy" />
-            <PropertyRef Name="ModifiedOn" />
-          </Key>
-          <Property Name="OracleGLEntryId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="OracleGLLoadId" Type="Int64" Nullable="false" />
-          <Property Name="UniqueReferenceKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="JournalEntryHeaderNumber" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="JournalEntryDescription" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
-          <Property Name="LineNumber" Type="Int32" />
-          <Property Name="LineDescription" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
-          <Property Name="AccountNumber" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="AccountDescription" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
-          <Property Name="SubAccountDescription" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
-          <Property Name="EffectiveDate" Type="DateTime" Precision="7" />
-          <Property Name="EntrySource" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
-          <Property Name="EnteredDr" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="EnteredCr" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="AccountedDr" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="AccountedCr" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="Currency" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="ExchangeRate" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="Period" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="FiscalYearId" Type="Int16" />
-          <Property Name="JECreationDate" Type="DateTime" Precision="7" />
-          <Property Name="JELastUpdateDate" Type="DateTime" Precision="7" />
-          <Property Name="StatusId" Type="Byte" Nullable="false" />
-          <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="7" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="ModifiedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ModifiedOn" Type="DateTime" Nullable="false" Precision="7" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="FiscalYear" Relationship="Self.FK_OracleGLEntry_FiscalYear" FromRole="OracleGLEntry" ToRole="FiscalYear" />
-          <NavigationProperty Name="OracleGLLoad" Relationship="Self.FK_OracleGLEntry_OracleGLLoad" FromRole="OracleGLEntry" ToRole="OracleGLLoad" />
-          <NavigationProperty Name="Status" Relationship="Self.FK_OracleGLEntry_Status" FromRole="OracleGLEntry" ToRole="Status" />
+          <NavigationProperty Name="OracleGLEntries" Relationship="FrsOracleGLLoader.DBModel.FK_OracleGLEntry_Status" FromRole="Status" ToRole="OracleGLEntry" />
         </EntityType>
         <Association Name="FK_CategoryLog_Category">
           <End Role="Category" Type="Self.Category" Multiplicity="1" />
@@ -640,18 +558,6 @@ warning 6002: The table/view 'GF-FRS-V.2.dbo.OracleGLEntry' does not have a prim
             </Principal>
             <Dependent Role="OracleGLLoad">
               <PropertyRef Name="FileContentId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_OracleGLEntry_FiscalYear">
-          <End Role="FiscalYear" Type="Self.FiscalYear" Multiplicity="0..1" />
-          <End Role="OracleGLEntry" Type="Self.OracleGLEntry" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FiscalYear">
-              <PropertyRef Name="Value" />
-            </Principal>
-            <Dependent Role="OracleGLEntry">
-              <PropertyRef Name="FiscalYearId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -715,18 +621,6 @@ warning 6002: The table/view 'GF-FRS-V.2.dbo.OracleGLEntry' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_OracleGLEntry_OracleGLLoad">
-          <End Role="OracleGLLoad" Type="Self.OracleGLLoad" Multiplicity="1" />
-          <End Role="OracleGLEntry" Type="Self.OracleGLEntry" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="OracleGLLoad">
-              <PropertyRef Name="OracleGLLoadId" />
-            </Principal>
-            <Dependent Role="OracleGLEntry">
-              <PropertyRef Name="OracleGLLoadId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_OracleGLLoad_Status">
           <End Role="Status" Type="Self.Status" Multiplicity="1" />
           <End Role="OracleGLLoad" Type="Self.OracleGLLoad" Multiplicity="*" />
@@ -735,18 +629,6 @@ warning 6002: The table/view 'GF-FRS-V.2.dbo.OracleGLEntry' does not have a prim
               <PropertyRef Name="Value" />
             </Principal>
             <Dependent Role="OracleGLLoad">
-              <PropertyRef Name="StatusId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_OracleGLEntry_Status">
-          <End Role="Status" Type="Self.Status" Multiplicity="1" />
-          <End Role="OracleGLEntry" Type="Self.OracleGLEntry" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Status">
-              <PropertyRef Name="Value" />
-            </Principal>
-            <Dependent Role="OracleGLEntry">
               <PropertyRef Name="StatusId" />
             </Dependent>
           </ReferentialConstraint>
@@ -762,7 +644,6 @@ warning 6002: The table/view 'GF-FRS-V.2.dbo.OracleGLEntry' does not have a prim
           <EntitySet Name="Logs" EntityType="Self.Log" />
           <EntitySet Name="OracleGLLoads" EntityType="Self.OracleGLLoad" />
           <EntitySet Name="Status" EntityType="Self.Status" />
-          <EntitySet Name="OracleGLEntries" EntityType="Self.OracleGLEntry" />
           <AssociationSet Name="FK_CategoryLog_Category" Association="Self.FK_CategoryLog_Category">
             <End Role="Category" EntitySet="Categories" />
             <End Role="CategoryLog" EntitySet="CategoryLogs" />
@@ -774,10 +655,6 @@ warning 6002: The table/view 'GF-FRS-V.2.dbo.OracleGLEntry' does not have a prim
           <AssociationSet Name="FK_OracleGLLoad_FileContent" Association="Self.FK_OracleGLLoad_FileContent">
             <End Role="FileContent" EntitySet="FileContents" />
             <End Role="OracleGLLoad" EntitySet="OracleGLLoads" />
-          </AssociationSet>
-          <AssociationSet Name="FK_OracleGLEntry_FiscalYear" Association="Self.FK_OracleGLEntry_FiscalYear">
-            <End Role="FiscalYear" EntitySet="FiscalYears" />
-            <End Role="OracleGLEntry" EntitySet="OracleGLEntries" />
           </AssociationSet>
           <AssociationSet Name="FK_Load_LoadMetaData" Association="Self.FK_Load_LoadMetaData">
             <End Role="LoadMetaData" EntitySet="LoadMetaDatas" />
@@ -799,17 +676,9 @@ warning 6002: The table/view 'GF-FRS-V.2.dbo.OracleGLEntry' does not have a prim
             <End Role="Status" EntitySet="Status" />
             <End Role="LoadType" EntitySet="LoadTypes" />
           </AssociationSet>
-          <AssociationSet Name="FK_OracleGLEntry_OracleGLLoad" Association="Self.FK_OracleGLEntry_OracleGLLoad">
-            <End Role="OracleGLLoad" EntitySet="OracleGLLoads" />
-            <End Role="OracleGLEntry" EntitySet="OracleGLEntries" />
-          </AssociationSet>
           <AssociationSet Name="FK_OracleGLLoad_Status" Association="Self.FK_OracleGLLoad_Status">
             <End Role="Status" EntitySet="Status" />
             <End Role="OracleGLLoad" EntitySet="OracleGLLoads" />
-          </AssociationSet>
-          <AssociationSet Name="FK_OracleGLEntry_Status" Association="Self.FK_OracleGLEntry_Status">
-            <End Role="Status" EntitySet="Status" />
-            <End Role="OracleGLEntry" EntitySet="OracleGLEntries" />
           </AssociationSet>
           <FunctionImport Name="WriteLog">
             <Parameter Name="EventID" Mode="In" Type="Int32" />
@@ -827,7 +696,91 @@ warning 6002: The table/view 'GF-FRS-V.2.dbo.OracleGLEntry' does not have a prim
             <Parameter Name="FormattedMessage" Mode="In" Type="String" />
             <Parameter Name="LogId" Mode="InOut" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="OracleGLEntries" EntityType="FrsOracleGLLoader.DBModel.OracleGLEntry" />
+          <AssociationSet Name="FK_OracleGLEntry_FiscalYear" Association="FrsOracleGLLoader.DBModel.FK_OracleGLEntry_FiscalYear">
+            <End Role="FiscalYear" EntitySet="FiscalYears" />
+            <End Role="OracleGLEntry" EntitySet="OracleGLEntries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OracleGLEntry_OracleGLLoad" Association="FrsOracleGLLoader.DBModel.FK_OracleGLEntry_OracleGLLoad">
+            <End Role="OracleGLLoad" EntitySet="OracleGLLoads" />
+            <End Role="OracleGLEntry" EntitySet="OracleGLEntries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OracleGLEntry_Status" Association="FrsOracleGLLoader.DBModel.FK_OracleGLEntry_Status">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="OracleGLEntry" EntitySet="OracleGLEntries" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="OracleGLEntry">
+          <Key>
+            <PropertyRef Name="OracleGLEntryId" />
+          </Key>
+          <Property Name="OracleGLEntryId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OracleGLLoadId" Type="Int64" Nullable="false" />
+          <Property Name="UniqueReferenceKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="JournalEntryHeaderNumber" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="JournalEntryDescription" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Name="LineNumber" Type="Int32" />
+          <Property Name="LineDescription" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Name="AccountNumber" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="AccountDescription" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Name="SubAccountDescription" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Name="EffectiveDate" Type="DateTime" Precision="7" />
+          <Property Name="EntrySource" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="EnteredDr" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="EnteredCr" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AccountedDr" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AccountedCr" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Currency" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ExchangeRate" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Period" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="FiscalYearId" Type="Int16" />
+          <Property Name="JECreationDate" Type="DateTime" Precision="7" />
+          <Property Name="JELastUpdateDate" Type="DateTime" Precision="7" />
+          <Property Name="StatusId" Type="Byte" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="ModifiedBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedOn" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="FiscalYear" Relationship="FrsOracleGLLoader.DBModel.FK_OracleGLEntry_FiscalYear" FromRole="OracleGLEntry" ToRole="FiscalYear" />
+          <NavigationProperty Name="OracleGLLoad" Relationship="FrsOracleGLLoader.DBModel.FK_OracleGLEntry_OracleGLLoad" FromRole="OracleGLEntry" ToRole="OracleGLLoad" />
+          <NavigationProperty Name="Status" Relationship="FrsOracleGLLoader.DBModel.FK_OracleGLEntry_Status" FromRole="OracleGLEntry" ToRole="Status" />
+        </EntityType>
+        <Association Name="FK_OracleGLEntry_FiscalYear">
+          <End Type="FrsOracleGLLoader.DBModel.FiscalYear" Role="FiscalYear" Multiplicity="0..1" />
+          <End Type="FrsOracleGLLoader.DBModel.OracleGLEntry" Role="OracleGLEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FiscalYear">
+              <PropertyRef Name="Value" />
+            </Principal>
+            <Dependent Role="OracleGLEntry">
+              <PropertyRef Name="FiscalYearId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OracleGLEntry_OracleGLLoad">
+          <End Type="FrsOracleGLLoader.DBModel.OracleGLLoad" Role="OracleGLLoad" Multiplicity="1" />
+          <End Type="FrsOracleGLLoader.DBModel.OracleGLEntry" Role="OracleGLEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OracleGLLoad">
+              <PropertyRef Name="OracleGLLoadId" />
+            </Principal>
+            <Dependent Role="OracleGLEntry">
+              <PropertyRef Name="OracleGLLoadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OracleGLEntry_Status">
+          <End Type="FrsOracleGLLoader.DBModel.Status" Role="Status" Multiplicity="1" />
+          <End Type="FrsOracleGLLoader.DBModel.OracleGLEntry" Role="OracleGLEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="Value" />
+            </Principal>
+            <Dependent Role="OracleGLEntry">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -965,40 +918,40 @@ warning 6002: The table/view 'GF-FRS-V.2.dbo.OracleGLEntry' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="WriteLog" FunctionName="FrsOracleGLLoader.DBModel.Store.WriteLog" />
           <EntitySetMapping Name="OracleGLEntries">
             <EntityTypeMapping TypeName="FrsOracleGLLoader.DBModel.OracleGLEntry">
               <MappingFragment StoreEntitySet="OracleGLEntry">
-                <ScalarProperty Name="OracleGLEntryId" ColumnName="OracleGLEntryId" />
-                <ScalarProperty Name="OracleGLLoadId" ColumnName="OracleGLLoadId" />
-                <ScalarProperty Name="UniqueReferenceKey" ColumnName="UniqueReferenceKey" />
-                <ScalarProperty Name="JournalEntryHeaderNumber" ColumnName="JournalEntryHeaderNumber" />
-                <ScalarProperty Name="JournalEntryDescription" ColumnName="JournalEntryDescription" />
-                <ScalarProperty Name="LineNumber" ColumnName="LineNumber" />
-                <ScalarProperty Name="LineDescription" ColumnName="LineDescription" />
-                <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
-                <ScalarProperty Name="AccountDescription" ColumnName="AccountDescription" />
-                <ScalarProperty Name="SubAccountDescription" ColumnName="SubAccountDescription" />
-                <ScalarProperty Name="EffectiveDate" ColumnName="EffectiveDate" />
-                <ScalarProperty Name="EntrySource" ColumnName="EntrySource" />
-                <ScalarProperty Name="EnteredDr" ColumnName="EnteredDr" />
-                <ScalarProperty Name="EnteredCr" ColumnName="EnteredCr" />
-                <ScalarProperty Name="AccountedDr" ColumnName="AccountedDr" />
-                <ScalarProperty Name="AccountedCr" ColumnName="AccountedCr" />
-                <ScalarProperty Name="Currency" ColumnName="Currency" />
-                <ScalarProperty Name="ExchangeRate" ColumnName="ExchangeRate" />
-                <ScalarProperty Name="Period" ColumnName="Period" />
-                <ScalarProperty Name="FiscalYearId" ColumnName="FiscalYearId" />
-                <ScalarProperty Name="JECreationDate" ColumnName="JECreationDate" />
-                <ScalarProperty Name="JELastUpdateDate" ColumnName="JELastUpdateDate" />
-                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="JELastUpdateDate" ColumnName="JELastUpdateDate" />
+                <ScalarProperty Name="JECreationDate" ColumnName="JECreationDate" />
+                <ScalarProperty Name="FiscalYearId" ColumnName="FiscalYearId" />
+                <ScalarProperty Name="Period" ColumnName="Period" />
+                <ScalarProperty Name="ExchangeRate" ColumnName="ExchangeRate" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="AccountedCr" ColumnName="AccountedCr" />
+                <ScalarProperty Name="AccountedDr" ColumnName="AccountedDr" />
+                <ScalarProperty Name="EnteredCr" ColumnName="EnteredCr" />
+                <ScalarProperty Name="EnteredDr" ColumnName="EnteredDr" />
+                <ScalarProperty Name="EntrySource" ColumnName="EntrySource" />
+                <ScalarProperty Name="EffectiveDate" ColumnName="EffectiveDate" />
+                <ScalarProperty Name="SubAccountDescription" ColumnName="SubAccountDescription" />
+                <ScalarProperty Name="AccountDescription" ColumnName="AccountDescription" />
+                <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
+                <ScalarProperty Name="LineDescription" ColumnName="LineDescription" />
+                <ScalarProperty Name="LineNumber" ColumnName="LineNumber" />
+                <ScalarProperty Name="JournalEntryDescription" ColumnName="JournalEntryDescription" />
+                <ScalarProperty Name="JournalEntryHeaderNumber" ColumnName="JournalEntryHeaderNumber" />
+                <ScalarProperty Name="UniqueReferenceKey" ColumnName="UniqueReferenceKey" />
+                <ScalarProperty Name="OracleGLLoadId" ColumnName="OracleGLLoadId" />
+                <ScalarProperty Name="OracleGLEntryId" ColumnName="OracleGLEntryId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="WriteLog" FunctionName="FrsOracleGLLoader.DBModel.Store.WriteLog" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -92,7 +92,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FRSMT940LoaderModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Handlers\DatabaseHandler.cs" />
+    <Compile Include="Handlers\MT940DatabaseHandler.cs" />
     <Compile Include="Fault\FaultClasses.cs" />
     <Compile Include="Helpers\DotNetHelper.cs" />
     <Compile Include="Load.cs">

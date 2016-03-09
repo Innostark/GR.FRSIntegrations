@@ -6,6 +6,7 @@ using System.Threading;
 using Gf.Frs.LoaderServices.Wcf.MT940;
 using Gf.Frs.LoaderServices.Logging;
 using NLog;
+using Gf.Frs.LoaderServices.Wcf.OracleGL;
 
 namespace Gf.Frs.LoaderServices.WinService
 {
@@ -13,7 +14,8 @@ namespace Gf.Frs.LoaderServices.WinService
     {
         private string _serviceName = "IST FRS.MT940Loader WindowService V1.0.0.0";
 
-        public ServiceHost serviceHost = null;
+        public ServiceHost serviceHostWcfMT940 = null;
+        public ServiceHost serviceHostWcfOracleGL = null;
         public LoaderWinService()
         {
             // Name the Windows Service
@@ -55,24 +57,39 @@ namespace Gf.Frs.LoaderServices.WinService
 
         protected override void OnStart(string[] args)
         {
-            if (serviceHost != null)
+            if (serviceHostWcfMT940 != null)
             {
-                serviceHost.Close();
+                serviceHostWcfMT940.Close();
             }
 
-            // Create a ServiceHost for the FRSMT940LoaderWCFService type and provide the base address.
-            serviceHost = new ServiceHost(typeof(FrsMT940WcfLoaderService));
+            if (serviceHostWcfOracleGL != null)
+            {
+                serviceHostWcfOracleGL.Close();
+            }
+
+            // Create a ServiceHost for the MT940 WCF Service type and provide the base address.
+            serviceHostWcfMT940 = new ServiceHost(typeof(FrsMT940WcfLoaderService));
+
+            // Create a ServiceHost for the Oracle GL WCF Service type and provide the base address.
+            serviceHostWcfOracleGL = new ServiceHost(typeof(FrsOracleGLWcfLoaderService));
 
             // Open the ServiceHostBase to create listeners and start listening for messages.
-            serviceHost.Open();
+            serviceHostWcfMT940.Open();
+            serviceHostWcfOracleGL.Open();
         }
 
         protected override void OnStop()
         {
-            if (serviceHost != null)
+            if (serviceHostWcfMT940 != null)
             {
-                serviceHost.Close();
-                serviceHost = null;
+                serviceHostWcfMT940.Close();
+                serviceHostWcfMT940 = null;
+            }
+
+            if (serviceHostWcfOracleGL != null)
+            {
+                serviceHostWcfOracleGL.Close();
+                serviceHostWcfOracleGL = null;
             }
         }
 

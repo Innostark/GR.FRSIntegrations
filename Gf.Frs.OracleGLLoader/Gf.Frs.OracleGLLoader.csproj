@@ -109,9 +109,9 @@
     <Compile Include="Fault\FaultClasses.cs" />
     <Compile Include="Handlers\OracleGLDatabaseHandler.cs" />
     <Compile Include="Handlers\OracleGLLoadHandler.cs" />
-    <Compile Include="Loader\OracleGLLoaderLibrary.cs" />
     <Compile Include="DataModel\AccountingEntry.cs" />
     <Compile Include="DataModel\AccountingFiscalYear.cs" />
+    <Compile Include="Loader\OracleGLLoaderLibrary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -244,6 +244,8 @@ namespace Gf.Frs.OracleGLLoader.Handlers
             {
                 OracleGLEntry oracleGlEntry = _dbHandler.DbContext.OracleGLEntries.Create();
 
+                oracleGlEntry.OracleGLLoadId = load.OracleGLLoad.OracleGLLoadId;
+
                 #region **START** Set common customer statement data
                 oracleGlEntry.AccountDescription = accountingEntry.AccountDescription;
                 oracleGlEntry.AccountedCr = accountingEntry.AccountedCr;
@@ -269,11 +271,17 @@ namespace Gf.Frs.OracleGLLoader.Handlers
                 oracleGlEntry.SubAccountDescription = accountingEntry.SubAccountDescription;
                 oracleGlEntry.UniqueReferenceKey = accountingEntry.UniqueReferenceKey;
 
+                oracleGlEntry.CreatedBy = userId;
+                oracleGlEntry.ModifiedBy = userId;
+                oracleGlEntry.StatusId = 1;
+
                 #endregion **END** Set common customer statement data
 
                 AddOracleGLEntry(oracleGlEntry);
 
                 isSaveChanges = true;
+
+                //break;
             }
 
             

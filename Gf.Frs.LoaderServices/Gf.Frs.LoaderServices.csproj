@@ -65,7 +65,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Async\AsyncResponse.cs" />
     <Compile Include="FRSNLogManager.cs" />
+    <Compile Include="InputOutput\MT940\LoadMT940AfterInsertResponseAsyncResponse.cs" />
     <Compile Include="InputOutput\OracleGL\LoadOracleGLAfterInsertRequest.cs" />
     <Compile Include="InputOutput\OracleGL\LoadOracleGLAfterInsertResponse.cs" />
     <Compile Include="Wcf\MT940\FrsMT940WcfLoaderService.cs" />
@@ -92,7 +94,6 @@
     </Content>
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
   </ItemGroup>

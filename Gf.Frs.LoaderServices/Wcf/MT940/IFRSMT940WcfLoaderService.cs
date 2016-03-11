@@ -1,5 +1,6 @@
 ﻿using System.ServiceModel;
 using Gf.Frs.LoaderServices.InputOutput.MT940;
+using System;
 
 namespace Gf.Frs.LoaderServices.Wcf.MT940
 {
@@ -11,5 +12,10 @@ namespace Gf.Frs.LoaderServices.Wcf.MT940
     {
         [OperationContract]
         LoadMT940AfterInsertResponse LoadMT940AfterInsert(LoadMT940AfterInsertRequest request);
+
+        //[OperationContract(IsOneWay = false, AsyncPattern = true)]
+        //IAsyncResult BeginLoadMT940AfterInsert(LoadMT940AfterInsertRequest request, AsyncCallback callback, object state);
+
+        //IAsyncResult EndLoadMT940AfterInsert(IAsyncResult asyncResult);
     }
 }

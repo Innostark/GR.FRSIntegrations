@@ -1,9 +1,9 @@
-﻿using System.Runtime.Serialization;
+﻿using Gf.Frs.MT940LoaderService.Async;
+using System;
+using System.Runtime.Serialization;
 
-namespace Gf.Frs.LoaderServices.InputOutput.OracleGL
-{
-    [DataContract(Name = "LoadOracleGLAfterInsertResponse", Namespace = "http://www.gulffinance.com.sa/frs/v1/oraclegl/operations/loadafterinsert/response")]
-    public class LoadOracleGLAfterInsertResponse
+namespace Gf.Frs.MT940LoaderService.InputOutput.MT940
+{    public class LoadMT940AfterInsertResponseAsyncResponse : AsyncResponse
     {
         [DataMember(Order = 0, IsRequired = true, Name = "Code")]
         public long Code;
@@ -14,7 +14,8 @@ namespace Gf.Frs.LoaderServices.InputOutput.OracleGL
         public const long SUCCESS_CODE = 0;
         public const string SUCCESS_MESSAGE = "Request completed successfully! HURRAY!!!";
 
-        public LoadOracleGLAfterInsertResponse(long code, string message)
+        public LoadMT940AfterInsertResponseAsyncResponse(long code, string message, AsyncCallback callback, object state)
+        : base(callback, state)
         {
             Code = code;
             Message = message;

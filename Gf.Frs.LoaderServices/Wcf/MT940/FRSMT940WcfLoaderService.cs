@@ -7,12 +7,39 @@ using DevTrends.WCFDataAnnotations;
 using Gf.Frs.MT940Loader;
 using Gf.Frs.IntegrationCommon.Fault;
 using Gf.Frs.IntegrationCommon.Helpers;
+using Gf.Frs.MT940LoaderService.InputOutput.MT940;
+using System.Threading;
 
 namespace Gf.Frs.LoaderServices.Wcf.MT940
 {
     [ValidateDataAnnotationsBehavior]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
     public class FrsMT940WcfLoaderService : IFrsMT940WcfLoaderService
     {
+        public IAsyncResult BeginLoadMT940AfterInsert(LoadMT940AfterInsertRequest request, AsyncCallback callback, object state)
+        {
+            LoadMT940AfterInsertResponse response = LoadMT940AfterInsert(request);
+
+            var asyncResult = new LoadMT940AfterInsertResponseAsyncResponse(response.Code, response.Message, callback, state);
+
+            ThreadPool.QueueUserWorkItem(CompleteProcess, asyncResult);
+
+            return asyncResult;
+        }
+
+        private void CompleteProcess(object state)
+        {
+            var asyncResult = state as LoadMT940AfterInsertResponseAsyncResponse;
+            asyncResult.Completed();
+        }
+
+        public IAsyncResult EndLoadMT940AfterInsert(IAsyncResult asyncResult)
+        {
+            var operationAsyncResult = asyncResult as LoadMT940AfterInsertResponseAsyncResponse;
+            operationAsyncResult.AsyncWait.WaitOne();
+            return operationAsyncResult;
+        }
+
         public LoadMT940AfterInsertResponse LoadMT940AfterInsert(LoadMT940AfterInsertRequest request)
         {
             if(string.IsNullOrEmpty(request.UserId))
@@ -119,7 +146,8 @@ namespace Gf.Frs.LoaderServices.Wcf.MT940
             } 
             #endregion
 
-            return null;
+            return new LoadMT940AfterInsertResponse(LoadMT940AfterInsertResponse.SUCCESS_CODE, LoadMT940AfterInsertResponse.SUCCESS_MESSAGE);
         }
     }
+
 }

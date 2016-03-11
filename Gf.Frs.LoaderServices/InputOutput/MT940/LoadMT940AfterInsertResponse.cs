@@ -10,5 +10,14 @@ namespace Gf.Frs.LoaderServices.InputOutput.MT940
 
         [DataMember(Order = 0, IsRequired = true, Name = "Message")]
         public string Message;
+
+        public const long SUCCESS_CODE = 0;
+        public const string SUCCESS_MESSAGE = "Request completed successfully! HURRAY!!!";
+
+        public LoadMT940AfterInsertResponse(long code, string message)
+        {
+            Code = code;
+            Message = message;
+        }
     }
 }

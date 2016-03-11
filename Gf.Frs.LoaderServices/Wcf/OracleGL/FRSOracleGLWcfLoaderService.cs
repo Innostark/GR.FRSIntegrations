@@ -15,13 +15,17 @@ namespace Gf.Frs.LoaderServices.Wcf.OracleGL
     {
         public LoadOracleGLAfterInsertResponse LoadOracleGLAfterInsert(LoadOracleGLAfterInsertRequest request)
         {
-            if(string.IsNullOrEmpty(request.UserId))
+            #region ##START## Request Parameters Validation
+
+            if (string.IsNullOrEmpty(request.UserId))
             {
                 throw new FaultException(string.Format("There was a fault validating passed User Id = {1}.{0}Fault details:{0}{2}",
                                                         Environment.NewLine,
                                                         request.LoadId.ToString(),
                                                         "The user id is not valid. Please provide a valid User Id for a successful execution."));
             }
+
+            #endregion
 
             OracleGLLoadHandler oracleGlLoadHandler = new OracleGLLoadHandler();
             List<LoaderFault> faults = new List<LoaderFault>();
@@ -116,7 +120,7 @@ namespace Gf.Frs.LoaderServices.Wcf.OracleGL
             }
             #endregion
 
-            return null;
+            return new LoadOracleGLAfterInsertResponse(LoadOracleGLAfterInsertResponse.SUCCESS_CODE, LoadOracleGLAfterInsertResponse.SUCCESS_MESSAGE);
         }
     }
 }

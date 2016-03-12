@@ -95,7 +95,6 @@
   <ItemGroup>
     <Content Include="scripts\ai.0.15.0-build58334.js" />
     <Content Include="scripts\ai.0.15.0-build58334.min.js" />
-    <Content Include="Service1.svc" />
     <Content Include="Svc.Accounts.OracleGL\AccountsOracleGLLoader.svc" />
     <Content Include="Svc.Bank.MT940\BankMT940Loader.svc" />
     <Content Include="Web.config" />
@@ -105,10 +104,6 @@
     <Compile Include="InputOutput\Accounts.OracleGL\LoadOracleGLResponse.cs" />
     <Compile Include="InputOutput\Bank.MT940\LoadMT940Request.cs" />
     <Compile Include="InputOutput\Bank.MT940\LoadMT940Response.cs" />
-    <Compile Include="Service1.svc.cs">
-      <DependentUpon>Service1.svc</DependentUpon>
-    </Compile>
-    <Compile Include="IService1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Svc.Accounts.OracleGL\AccountsOracleGLLoader.svc.cs">
       <DependentUpon>AccountsOracleGLLoader.svc</DependentUpon>

@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="Gf.Frs.WcfLoaderServices.Svc.Bank.MT940.BankMT940Loader" CodeBehind="BankMT940Loader.svc.cs" %>

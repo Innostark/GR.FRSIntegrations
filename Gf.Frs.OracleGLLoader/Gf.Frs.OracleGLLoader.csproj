@@ -64,6 +64,9 @@
     <Compile Include="DataModel\CategoryLog.cs">
       <DependentUpon>FrsOracleGLLoaderModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataModel\Currency.cs">
+      <DependentUpon>FrsOracleGLLoaderModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataModel\FileContent.cs">
       <DependentUpon>FrsOracleGLLoaderModel.tt</DependentUpon>
     </Compile>
@@ -91,18 +94,25 @@
     <Compile Include="DataModel\LoadMetaData.cs">
       <DependentUpon>FrsOracleGLLoaderModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataModel\LoadStatus.cs">
+      <DependentUpon>FrsOracleGLLoaderModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataModel\LoadType.cs">
       <DependentUpon>FrsOracleGLLoaderModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DataModel\Log.cs">
       <DependentUpon>FrsOracleGLLoaderModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataModel\Mappers\DBLoadStatusToRefLoadStatus.cs" />
+    <Compile Include="DataModel\Mappers\DBStatusToRefStatus.cs" />
     <Compile Include="DataModel\OracleGLEntry.cs">
       <DependentUpon>FrsOracleGLLoaderModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DataModel\OracleGLLoad.cs">
       <DependentUpon>FrsOracleGLLoaderModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataModel\RefDataLoadStatus.cs" />
+    <Compile Include="DataModel\RefDataStatus.cs" />
     <Compile Include="DataModel\Status.cs">
       <DependentUpon>FrsOracleGLLoaderModel.tt</DependentUpon>
     </Compile>

@@ -7,6 +7,7 @@ using Gf.Frs.OracleGLLoader.DataModel;
 using Gf.Frs.IntegrationCommon.Helpers;
 using Gf.Frs.OracleGLLoader.Fault;
 using System.IO;
+using Gf.Frs.OracleGLLoader.DataModel.Mappers;
 
 namespace Gf.Frs.OracleGLLoader.Handlers
 {
@@ -134,22 +135,7 @@ namespace Gf.Frs.OracleGLLoader.Handlers
                     faults.Add(new LoaderFault(FrsFileContentValidationFaults.NBD_C_NoBase64Data, FrsFileContentValidationFaults.NBD_NoBase64Data));
             }
 
-        }
-
-        public void SummariseOracleGLLoadOnCompletion(Load load, OracleGLLoad oracleGlLoad)
-        {
-            //Load modified fields
-            _dbHandler.DbContext.Entry(load).Property(e => e.Finish).IsModified = true;
-            _dbHandler.DbContext.Entry(load).Property(e => e.InProgress).IsModified = true;
-            _dbHandler.DbContext.Entry(load).Property(e => e.ModifiedBy).IsModified = true;
-
-            //OracleGLLoad modified fields
-            _dbHandler.DbContext.Entry(oracleGlLoad).Property(e => e.OracleGLEntryCount).IsModified = true;
-            _dbHandler.DbContext.Entry(oracleGlLoad).Property(e => e.ModifiedBy).IsModified = true;
-
-            //Commit changes to database
-            _dbHandler.DbContext.SaveChanges();
-        }
+        }       
 
         private OracleGLEntry AddOracleGLEntry(OracleGLEntry oracleGlEntry)
         {            
@@ -303,7 +289,87 @@ namespace Gf.Frs.OracleGLLoader.Handlers
             return Convert.ToInt16(_processedOracleGLEntryCount);
         }
 
+        /// <summary>
+        /// Method to load the Reference data Load Statuses
+        /// </summary>
+        /// <returns>A list of Ref Load Statuses</returns>
+        public List<RefDataLoadStatus> GetLoadStatuses()
+        {
+            List<RefDataLoadStatus> refDataLoadStatuses = new List<RefDataLoadStatus>();
+
+            foreach (LoadStatus loadStatus in _dbHandler.DbContext.LoadStatus.ToList())
+            {
+                RefDataLoadStatus refDataLoadStatus = new RefDataLoadStatus();
+                refDataLoadStatuses.Add(DBLoadStatusToRefLoadStatus.MapToLoader(loadStatus, out refDataLoadStatus));
+            }
+            
+            return refDataLoadStatuses;
+        }
+
+        /// <summary>
+        /// Method to load the Reference data Statuses
+        /// </summary>
+        /// <returns></returns>
+        public List<RefDataStatus> GetStatuses()
+        {
+            List<RefDataStatus> refDataStatuses = new List<RefDataStatus>();
+
+            foreach (Status status in _dbHandler.DbContext.Status.ToList())
+            {
+                RefDataStatus refDataStatus = new RefDataStatus();
+                refDataStatuses.Add(DBStatusToRefStatus.MapToLoader(status, out refDataStatus));
+            }
+
+            return refDataStatuses;
+        }
+
+        /// <summary>
+        /// Method to uupdate the load summary information after an Oracle GL load has successfully completed.
+        /// </summary>
+        /// <param name="load">Load</param>
+        /// <param name="oracleGlLoad">Oracle GL Load</param>
+        public void SummariseOracleGLLoadOnCompletion(Load load, OracleGLLoad oracleGlLoad)
+        {
+            //Load modified fields
+            _dbHandler.DbContext.Entry(load).Property(e => e.Finish).IsModified = true;
+            _dbHandler.DbContext.Entry(load).Property(e => e.InProgress).IsModified = true;
+            _dbHandler.DbContext.Entry(load).Property(e => e.ModifiedBy).IsModified = true;
+            _dbHandler.DbContext.Entry(load).Property(e => e.LoadStatusId).IsModified = true;
+            _dbHandler.DbContext.Entry(load).Property(e => e.ReadOnly).IsModified = true;
+
+
+            //OracleGLLoad modified fields
+            _dbHandler.DbContext.Entry(oracleGlLoad).Property(e => e.OracleGLEntryCount).IsModified = true;
+            _dbHandler.DbContext.Entry(oracleGlLoad).Property(e => e.ModifiedBy).IsModified = true;
+
+            //Commit changes to database
+            _dbHandler.DbContext.SaveChanges();
+        }
+
+        public void UpdateLoadStatusInNewContext(long loadId, RefDataLoadStatus loadStatus, string userId, bool readOnly)
+        {
+            using (FrsOracleGLLoaderContext context = new FrsOracleGLLoaderContext())
+            {
+                Load load = DbHandler.GetLoadById(context, loadId);
+
+                if(load != null)
+                {
+                    load.InProgress = true;
+                    load.LoadStatusId = loadStatus.StatusId;
+                    load.ModifiedBy = userId;
+                    load.ReadOnly = readOnly;
+
+                    context.Entry(load).Property(e => e.InProgress).IsModified = true;
+                    context.Entry(load).Property(e => e.LoadStatusId).IsModified = true;
+                    context.Entry(load).Property(e => e.ModifiedBy).IsModified = true;
+                    context.Entry(load).Property(e => e.ReadOnly).IsModified = true;
+
+                    context.SaveChanges();
+                }
+            }
+        }
+
         #endregion **END - Public Methods**
-        
+
     }
 }

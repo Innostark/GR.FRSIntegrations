@@ -21,6 +21,7 @@ namespace Gf.Frs.OracleGLLoader.DataModel
             this.LoadTypes = new HashSet<LoadType>();
             this.OracleGLLoads = new HashSet<OracleGLLoad>();
             this.OracleGLEntries = new HashSet<OracleGLEntry>();
+            this.LoadStatus = new HashSet<LoadStatus>();
         }
     
         public byte Value { get; set; }
@@ -34,5 +35,7 @@ namespace Gf.Frs.OracleGLLoader.DataModel
         public virtual ICollection<OracleGLLoad> OracleGLLoads { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OracleGLEntry> OracleGLEntries { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LoadStatus> LoadStatus { get; set; }
     }
 }

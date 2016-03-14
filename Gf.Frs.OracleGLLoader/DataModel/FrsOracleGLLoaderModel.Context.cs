@@ -38,6 +38,8 @@ namespace Gf.Frs.OracleGLLoader.DataModel
         public virtual DbSet<OracleGLLoad> OracleGLLoads { get; set; }
         public virtual DbSet<Status> Status { get; set; }
         public virtual DbSet<OracleGLEntry> OracleGLEntries { get; set; }
+        public virtual DbSet<Currency> Currencies { get; set; }
+        public virtual DbSet<LoadStatus> LoadStatus { get; set; }
     
         public virtual int WriteLog(Nullable<int> eventID, Nullable<int> priority, string severity, string title, Nullable<System.DateTime> timestamp, string machineName, string appDomainName, string processID, string processName, string threadName, string win32ThreadId, string message, string formattedMessage, ObjectParameter logId)
         {

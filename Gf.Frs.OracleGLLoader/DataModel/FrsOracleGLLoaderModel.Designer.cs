@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\ISTWORK\CODE\git1\GR.FRSIntegrations\Gf.Frs.OracleGLLoader\DataModel\FrsOracleGLLoaderModel.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\github\GR.FRSIntegrations\Gf.Frs.OracleGLLoader\DataModel\FrsOracleGLLoaderModel.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

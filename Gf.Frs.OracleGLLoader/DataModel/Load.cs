@@ -27,8 +27,10 @@ namespace Gf.Frs.OracleGLLoader.DataModel
         public string ModifiedBy { get; set; }
         public System.DateTime ModifiedOn { get; set; }
         public Nullable<long> OracleGLLoadId { get; set; }
+        public Nullable<byte> LoadStatusId { get; set; }
     
         public virtual LoadMetaData LoadMetaData { get; set; }
         public virtual OracleGLLoad OracleGLLoad { get; set; }
+        public virtual LoadStatus LoadStatus { get; set; }
     }
 }

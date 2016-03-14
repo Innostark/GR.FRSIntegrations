@@ -29,6 +29,10 @@
         <AssociationConnector Association="FrsOracleGLLoader.DBModel.FK_OracleGLEntry_FiscalYear" />
         <AssociationConnector Association="FrsOracleGLLoader.DBModel.FK_OracleGLEntry_OracleGLLoad" />
         <AssociationConnector Association="FrsOracleGLLoader.DBModel.FK_OracleGLEntry_Status" />
+        <EntityTypeShape EntityType="FrsOracleGLLoader.DBModel.Currency" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="FrsOracleGLLoader.DBModel.LoadStatus" Width="2" PointX="15.125" PointY="9.375" />
+        <AssociationConnector Association="FrsOracleGLLoader.DBModel.FK_Load_LoadStatus" />
+        <AssociationConnector Association="FrsOracleGLLoader.DBModel.FK_LoadStatus_Status" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -29,6 +29,11 @@ namespace Gf.Frs.OracleGLLoader.Handlers
             return _dbContext.Loads.Find(loadId);
         }
 
+        public Load GetLoadById(FrsOracleGLLoaderContext context, long loadId)
+        {
+            return context.Loads.Find(loadId);
+        }
+
         public LoadMetaData GetLoadMetadataById(short id)
         {
             return _dbContext.LoadMetaDatas.Find(id);

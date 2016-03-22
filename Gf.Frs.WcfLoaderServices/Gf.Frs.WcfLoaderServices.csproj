@@ -128,6 +128,7 @@
     <Compile Include="InputOutput\Bank.MT940\LoadMT940Request.cs" />
     <Compile Include="InputOutput\Bank.MT940\LoadMT940Response.cs" />
     <Compile Include="Loging\ILog.cs" />
+    <Compile Include="Loging\Log.cs" />
     <Compile Include="Loging\LogType.cs" />
     <Compile Include="Loging\NLogStoredProc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

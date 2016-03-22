@@ -49,6 +49,11 @@ namespace Gf.Frs.WcfLoaderServices.Accounts.OracleGL
             SetEventInfo(logEventInfo, LogLevel.Info, "Entering LoadOracleGL and setting up logger configurations...");
             frsLogManager.Instance.Log(logEventInfo);
 
+            //Loging.Log.Instance.Debug("We're going to throw an exception now.");
+            //logEventInfo.Message = "this is bill test";
+            //Loging.Log.Instance.Log(logEventInfo);
+
+
             SetEventInfo(logEventInfo, LogLevel.Info, "Starting validation... Validating input (LoadOracleGLRequest) request.");
             frsLogManager.Instance.Log(logEventInfo);
             #endregion **LOG ENTRY**
@@ -342,7 +347,14 @@ namespace Gf.Frs.WcfLoaderServices.Accounts.OracleGL
         private static void LoadFailed(LoadOracleGLRequest request, FrsNLogManager frsLogManager, LogEventInfo logEventInfo, OracleGLLoadHandler oracleGlLoadHandler, List<RefDataLoadStatus> refLoadStatuses)
         {
             //Update Load's Load Status to Failed in a new context
-            LoadFailed(request, frsLogManager, logEventInfo, oracleGlLoadHandler, refLoadStatuses);
+            oracleGlLoadHandler.UpdateLoadStatusInNewContext(request.LoadId,
+                                                             refLoadStatuses.Find(rls => rls.Name.ToLower().Equals(RefDataLoadStatus.LSFailed)),
+                                                             request.UserId,
+                                                             true);
+            #region **LOG ENTRY**
+            SetEventInfo(logEventInfo, LogLevel.Info, "Oracle GL Load record status set to 'Failed'.");
+            frsLogManager.Instance.Log(logEventInfo);
+            #endregion **LOG ENTRY**
         }
 
         private static void SetEventInfo(LogEventInfo lEventInfo, LogLevel level, string message, Exception ex=null)
@@ -364,6 +376,7 @@ namespace Gf.Frs.WcfLoaderServices.Accounts.OracleGL
                 SetEventInfo(logEventInfo, LogLevel.Fatal, message, fe);
                 //frsLogManager.Instance.Log(logEventInfo);
                 #endregion **LOG ENTRY**
+                //Loging.Log.Instance.ErrorException("Error doing something...", fe);
 
                 //Throw exception back
                 throw fe;

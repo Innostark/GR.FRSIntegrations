@@ -43,9 +43,11 @@
   <ItemGroup>
     <Compile Include="Fault\FaultClasses.cs" />
     <Compile Include="Fault\LoaderFault.cs" />
+    <Compile Include="Helpers\Cloner.cs" />
     <Compile Include="Helpers\DotNetHelper.cs" />
     <Compile Include="Helpers\ExceptionExtensions.cs" />
     <Compile Include="Helpers\LoaderConstants.cs" />
+    <Compile Include="Helpers\ObjectCopier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

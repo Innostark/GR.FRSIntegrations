@@ -6,12 +6,12 @@
         public string Name { get; set; }
         public byte StatusId { get; set; }
 
-        public const string LCCreated = "created";
-        public const string LCSubmitted = "submitted";
-        public const string LCParsing = "parsing";
-        public const string LCTransforming = "transforming";
-        public const string LCImporting = "importing";
-        public const string LCCompleted = "completed";
-        public const string LCFailed = "failed";
+        public const string LSCreated = "created";
+        public const string LSSubmitted = "submitted";
+        public const string LSParsing = "parsing";
+        public const string LSTransforming = "transforming";
+        public const string LSImporting = "importing";
+        public const string LSCompleted = "completed";
+        public const string LSFailed = "failed";
     }
 }

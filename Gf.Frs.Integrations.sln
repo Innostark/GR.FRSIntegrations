@@ -4,10 +4,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gf.Frs.MT940Loader", "Gf.Frs.MT940Loader\Gf.Frs.MT940Loader.csproj", "{F58978F5-8273-4746-BE9A-E00B12427BEB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3214699C-452E-47AE-92D6-45B49507A0C4} = {3214699C-452E-47AE-92D6-45B49507A0C4}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gf.Frs.ConsoleTester", "Gf.Frs.ConsoleTester\Gf.Frs.ConsoleTester.csproj", "{FBFC543D-68CE-40C4-87FE-465FA00CB428}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gf.Frs.OracleGLLoader", "Gf.Frs.OracleGLLoader\Gf.Frs.OracleGLLoader.csproj", "{7BF94B0A-026D-4196-9832-70CE9789E377}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3214699C-452E-47AE-92D6-45B49507A0C4} = {3214699C-452E-47AE-92D6-45B49507A0C4}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gf.Frs.ExceptionHandling", "Gf.Frs.ExceptionHandling\Gf.Frs.ExceptionHandling.csproj", "{5A6ACD2D-0701-4E38-99B7-65CC4E6CB8E8}"
 EndProject

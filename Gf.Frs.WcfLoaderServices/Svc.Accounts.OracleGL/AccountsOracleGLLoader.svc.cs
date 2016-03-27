@@ -22,15 +22,15 @@ namespace Gf.Frs.WcfLoaderServices.Accounts.OracleGL
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
     public class AccountsOracleGLLoader : IAccountsOracleGLLoader
     {
+        const string CurrentLogerName = "AccountsOracleGLLoader.LoadOracleGL";
         FrsNLogManager LogManager = new FrsNLogManager();
         FrsNLogIntegrationServiceStoredProc LogingSPDetails = new FrsNLogIntegrationServiceStoredProc();
-        const string OracleGLLogerName = "AccountsOracleGLLoader.LoadOracleGL";
-        Stopwatch TimingWatch = null;
         OracleGLLoadHandler OracleGLLoadHndlr = new OracleGLLoadHandler();
+        Stopwatch Timer = null;
 
         public LoadOracleGLResponse LoadOracleGL(LoadOracleGLRequest request)
         {
-            TimingWatch = Stopwatch.StartNew();
+            Timer = Stopwatch.StartNew();
 
             #region TODO: Authentication to be added later on project sign off
             //ServiceSecurityContext ssc = ServiceSecurityContext.Current;
@@ -296,9 +296,9 @@ namespace Gf.Frs.WcfLoaderServices.Accounts.OracleGL
 
             #endregion
 
-            TimingWatch.Stop();
+            Timer.Stop();
             // Get the elapsed time as a TimeSpan value.
-            TimeSpan ts = TimingWatch.Elapsed;
+            TimeSpan ts = Timer.Elapsed;
 
             // Format and display the TimeSpan value.
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
@@ -320,7 +320,7 @@ namespace Gf.Frs.WcfLoaderServices.Accounts.OracleGL
         {
             LogEventInfo lei = new LogEventInfo()
             {
-                LoggerName = OracleGLLogerName
+                LoggerName = CurrentLogerName
             };
 
             //Set logger details - called only once to set the stored procedure objects values
@@ -333,7 +333,7 @@ namespace Gf.Frs.WcfLoaderServices.Accounts.OracleGL
         {
             LogEventInfo lei = new LogEventInfo()
             {
-                LoggerName = OracleGLLogerName
+                LoggerName = CurrentLogerName
             };
             //Set logger details 
             SetLoggerDetailsFromSPDetails(lei, response);

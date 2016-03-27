@@ -5,9 +5,11 @@ using Gf.Frs.IntegrationCommon.Helpers;
 using Gf.Frs.LoaderWcfServices.InputOutput.Bank.MT940;
 using Gf.Frs.MT940Loader;
 using Gf.Frs.MT940Loader.Handlers;
-
+using Gf.Frs.WcfLoaderServices.Loging;
+using NLog;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.ServiceModel;
 
 namespace Gf.Frs.WcfLoaderServices.Bank.MT940
@@ -16,8 +18,31 @@ namespace Gf.Frs.WcfLoaderServices.Bank.MT940
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
     public class BankMT940Loader : IBankMT940Loader
     {
+        const string CurrentLogerName = "BankMT940Loader.LoadMT940";
+        FrsNLogManager LogManager = new FrsNLogManager();
+        FrsNLogIntegrationServiceStoredProc LogingSPDetails = new FrsNLogIntegrationServiceStoredProc();                
+        MT940LoadHandler mt940LoadHandler = new MT940LoadHandler();
+        Stopwatch Timer = null;
+
         public LoadMT940Response LoadMT940(LoadMT940Request request)
         {
+            Timer = Stopwatch.StartNew();
+
+            #region TODO: Authentication to be added later on project sign off
+            //ServiceSecurityContext ssc = ServiceSecurityContext.Current;
+            //if (!ssc.IsAnonymous && ssc.PrimaryIdentity != null)
+            //{
+            //    spDetails.userName = ServiceSecurityContext.Current.PrimaryIdentity.Name;
+            //} 
+            #endregion
+
+            #region **LOG ENTRY**
+            LogManager.SetSPDetailsAndLog(LogLevel.Info, string.Format("{2}{0}{2}{0}{1}{0}{2}{0}{2}",
+                                          Environment.NewLine,
+                                          "Entering LoadMT940 and setting up logger configurations...",
+                                          "#########################################################################################################"));
+            #endregion **LOG ENTRY**
+
             if (string.IsNullOrEmpty(request.UserId))
             {
                 throw new FaultException(string.Format("There was a fault validating passed User Id = {1}.{0}Fault details:{0}{2}",
@@ -26,43 +51,94 @@ namespace Gf.Frs.WcfLoaderServices.Bank.MT940
                                                         "The user id is not valid. Please provide a valid User Id for a successful execution."));
             }
 
-            MT940LoadHandler mt940LoadHandler = new MT940LoadHandler();
+            #region ##START## Request Parameters Validation
+
+            #region **LOG ENTRY**
+            LogManager.LogFromSPDetails(LogLevel.Info, "Starting validation... Validating input (LoadMT940Request) request.");
+            #endregion **LOG ENTRY**
+
+            if (request == null)
+            {
+                LogManager.RaiseException(string.Format("There was a fault validating the request.{0}Fault details:{0}{1}",
+                                            Environment.NewLine,
+                                            "The request cannot be empty. Please provide a valid request object for a successful execution."));
+            }
+
+            if (request.LoadId <= 0)
+            {
+                LogManager.RaiseException(string.Format("There was a fault validating passed Load Id = {1}.{0}Fault details:{0}{2}",
+                                            Environment.NewLine,
+                                            request.LoadId.ToString(),
+                                            "The load id is not valid. Please provide a valid Load Id for a successful execution."));
+            }
+
+            if (string.IsNullOrEmpty(request.UserId))
+            {
+                LogManager.RaiseException(string.Format("There was a fault validating passed User Id = {1}.{0}Fault details:{0}{2}",
+                                            Environment.NewLine,
+                                            request.UserId,
+                                            "The user id is not valid. Please provide a valid User Id for a successful execution."));
+            }
+
+            #endregion
+
+            #region **LOG ENTRY**
+            LogManager.LogFromSPDetails(LogLevel.Info, "Validating input (LoadMT940Request) request completed successfully.");
+            #endregion **LOG ENTRY**
+
+
             List<LoaderFault> faults = new List<LoaderFault>();
 
-            #region Validation of request Load Id
+            #region ##START## Validation of request Load Id
             try
             {
+                #region **LOG ENTRY**
+                LogManager.LogFromSPDetails(LogLevel.Info, "Validate the Load object fully, including the associated objects.");
+                #endregion **LOG ENTRY**
+
                 //Validate the Load object fully, including the associated objects
                 faults = mt940LoadHandler.ValidateLoadForNullOrEmpty(request.LoadId);
             }
             catch (Exception ex)
             {
-                throw new FaultException(string.Format("Unexpected error! during validation of Load Id = {1}.{0}Fault details:{0}{2}",
-                                                        Environment.NewLine,
-                                                        request.LoadId,
-                                                        ExceptionExtensions.ToDetailedString(ex)));
+                LogManager.RaiseException(string.Format("Unexpected error! during validation of Load Id = {1}.{0}Fault details:{0}{2}",
+                                          Environment.NewLine,
+                                          request.LoadId,
+                                          ExceptionExtensions.ToDetailedString(ex)));
             }
 
             if (faults != null && faults.Count > 0)
             {
-                throw new FaultException(string.Format("There was a fault validating passed Load Id = {1}.{0}Fault details:{0}{2}",
-                                                        Environment.NewLine,
-                                                        request.LoadId.ToString(),
-                                                        DotNetHelper.WrapFaultListToString(faults)));
+                LogManager.RaiseException(string.Format("There was a fault validating passed Load Id = {1}.{0}Fault details:{0}{2}",
+                                          Environment.NewLine,
+                                          request.LoadId.ToString(),
+                                          DotNetHelper.WrapFaultListToString(faults)));
             }
             #endregion
 
+            #region **LOG ENTRY**
+            LogManager.LogFromSPDetails(LogLevel.Info, "Get load object from database (to be used through out the function for this call), i.e. requested load.");
+            #endregion **LOG ENTRY**
+
             //Get load object from database (to be used through out the code for this call)
-            Load load = mt940LoadHandler.GetLoad(request.LoadId);
+            Load dbLoad = mt940LoadHandler.GetLoad(request.LoadId);
+
+            #region **LOG ENTRY**
+            LogFromSPDetails(LogLevel.Info, string.Format("Load (Load Id = {0}), successfully found in the database.", request.LoadId));
+            #endregion **LOG ENTRY**
+
+            #region **LOG ENTRY**
+            LogFromSPDetails(LogLevel.Info, "Loading reference data for the operation.");
+            #endregion **LOG ENTRY**
 
             //Very important to set the header and trailer as these are going to be used later throughout this processing
-            mt940LoadHandler.SetHeaderTrailer(load.LoadMetaData.Header, load.LoadMetaData.Trailer);
+            mt940LoadHandler.SetHeaderTrailer(dbLoad.LoadMetaData.Header, dbLoad.LoadMetaData.Trailer);
 
             #region MT940 Content validaton
             try
             {
                 //Validate the MT940 Base64 contents
-                faults = mt940LoadHandler.ValidateMT940FileContent(load.MT940Load.FileContent.FileContentBase64);
+                faults = mt940LoadHandler.ValidateMT940FileContent(dbLoad.MT940Load.FileContent.FileContentBase64);
             }
             catch (Exception ex)
             {
@@ -85,7 +161,7 @@ namespace Gf.Frs.WcfLoaderServices.Bank.MT940
             try
             {
                 //Load the MT940 file data into objects and then to the database
-                mt940LoadHandler.LoadMT940(load, load.MT940Load.FileContent.FileContentBase64, request.UserId);
+                mt940LoadHandler.LoadMT940(dbLoad, dbLoad.MT940Load.FileContent.FileContentBase64, request.UserId);
             }
             catch (Exception ex)
             {
@@ -102,16 +178,16 @@ namespace Gf.Frs.WcfLoaderServices.Bank.MT940
             {
                 DateTime updateTime = DateTime.UtcNow;
                 //MT940 Load record fields to be updated
-                load.MT940Load.CustomerStatementCount = mt940LoadHandler.GetProcessedCustomerStatementCount();
-                load.MT940Load.ModifiedBy = request.UserId;
+                dbLoad.MT940Load.CustomerStatementCount = mt940LoadHandler.GetProcessedCustomerStatementCount();
+                dbLoad.MT940Load.ModifiedBy = request.UserId;
 
                 //Load records field to be updated                                
-                load.InProgress = false;
-                load.Finish = updateTime;
-                load.ModifiedBy = request.UserId;
+                dbLoad.InProgress = false;
+                dbLoad.Finish = updateTime;
+                dbLoad.ModifiedBy = request.UserId;
 
                 //Perform the database update
-                mt940LoadHandler.SummariseMT940LoadOnCompletion(load, load.MT940Load);
+                mt940LoadHandler.SummariseMT940LoadOnCompletion(dbLoad, dbLoad.MT940Load);
             }
             catch (Exception ex)
             {

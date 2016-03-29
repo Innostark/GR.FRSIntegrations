@@ -12,12 +12,13 @@ using Gf.Frs.MT940Loader.DataModel.Mappers;
 
 namespace Gf.Frs.MT940Loader.Handlers
 {
-    public class MT940LoadHandler
+    public class MT940LoadHandler: IDisposable
     {
         private MT940DatabaseHandler _dbHandler;
         private MT940LoaderLibrary _mt940Loader;
         private short _AppConfigLoadTypeMT940Id = short.MinValue;
         private byte _processedCustomerStatementCount = 0;
+        private bool _disposed = false;
 
         internal MT940DatabaseHandler DbHandler
         {
@@ -419,6 +420,52 @@ namespace Gf.Frs.MT940Loader.Handlers
             }
         }
 
+        // Implement IDisposable. 
+        // Do not make this method virtual. 
+        // A derived class should not be able to override this method. 
+        public void Dispose()
+        {
+            Dispose(true);
+            // This object will be cleaned up by the Dispose method. 
+            // Therefore, you should call GC.SupressFinalize to 
+            // take this object off the finalization queue 
+            // and prevent finalization code for this object 
+            // from executing a second time.
+            GC.SuppressFinalize(this);
+        }
+
+        // Dispose(bool disposing) executes in two distinct scenarios. 
+        // If disposing equals true, the method has been called directly 
+        // or indirectly by a user's code. Managed and unmanaged resources 
+        // can be disposed. 
+        // If disposing equals false, the method has been called by the 
+        // runtime from inside the finalizer and you should not reference 
+        // other objects. Only unmanaged resources can be disposed. 
+        protected virtual void Dispose(bool disposing)
+        {
+            // Check to see if Dispose has already been called. 
+            if (!_disposed)
+            {
+                // If disposing equals true, dispose all managed 
+                // and unmanaged resources. 
+                if (disposing)
+                {
+                    // Dispose managed resources.
+                    _dbHandler.Dispose();
+                    _mt940Loader.Dispose();
+                }
+
+                // Call the appropriate methods to clean up 
+                // unmanaged resources here. 
+                // If disposing is false, 
+                // only the following code is executed.
+                
+
+                // Note disposing has been done.
+                _disposed = true;
+
+            }
+        }
 
         #endregion **END - Public Methods**
     }

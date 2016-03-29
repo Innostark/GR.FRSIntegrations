@@ -5,18 +5,19 @@ namespace Gf.Frs.ExceptionHandling
     /// <summary>
     /// Cares Exception
     /// </summary>
-    public sealed class FRSException : ApplicationException
+    [Serializable]
+    public sealed class FrsException : ApplicationException
     {
         /// <summary>
         /// Initializes a new instance of FRS Exception
         /// </summary>
-        public FRSException(string message): base(message)
+        public FrsException(string message): base(message)
         {            
         }
         /// <summary>
         /// Initializes a new instance of FRS Exception
         /// </summary>
-        public FRSException(string message, Exception innerException)
+        public FrsException(string message, Exception innerException)
             : base(message, innerException)
         {
         }

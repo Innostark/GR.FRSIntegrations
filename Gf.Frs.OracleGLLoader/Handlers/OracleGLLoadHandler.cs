@@ -12,12 +12,13 @@ using Gf.Frs.IntegrationCommon.DataModel;
 
 namespace Gf.Frs.OracleGLLoader.Handlers
 {
-    public class OracleGLLoadHandler
+    public class OracleGLLoadHandler: IDisposable
     {
         private OracleGLDatabaseHandler _dbHandler;
         private OracleGLLoaderLibrary _oracleGlLoader;
         private short _AppConfigLoadTypeOracleGLId = short.MinValue;
         private byte _processedOracleGLEntryCount = 0;
+        private bool _disposed = false;
 
         internal OracleGLDatabaseHandler DbHandler
         {
@@ -367,6 +368,53 @@ namespace Gf.Frs.OracleGLLoader.Handlers
 
                     context.SaveChanges();
                 }
+            }
+        }
+
+        // Implement IDisposable. 
+        // Do not make this method virtual. 
+        // A derived class should not be able to override this method. 
+        public void Dispose()
+        {
+            Dispose(true);
+            // This object will be cleaned up by the Dispose method. 
+            // Therefore, you should call GC.SupressFinalize to 
+            // take this object off the finalization queue 
+            // and prevent finalization code for this object 
+            // from executing a second time.
+            GC.SuppressFinalize(this);
+        }
+
+        // Dispose(bool disposing) executes in two distinct scenarios. 
+        // If disposing equals true, the method has been called directly 
+        // or indirectly by a user's code. Managed and unmanaged resources 
+        // can be disposed. 
+        // If disposing equals false, the method has been called by the 
+        // runtime from inside the finalizer and you should not reference 
+        // other objects. Only unmanaged resources can be disposed. 
+        protected virtual void Dispose(bool disposing)
+        {
+            // Check to see if Dispose has already been called. 
+            if (!_disposed)
+            {
+                // If disposing equals true, dispose all managed 
+                // and unmanaged resources. 
+                if (disposing)
+                {
+                    // Dispose managed resources.
+                    _dbHandler.Dispose();
+                    _oracleGlLoader.Dispose();
+                }
+
+                // Call the appropriate methods to clean up 
+                // unmanaged resources here. 
+                // If disposing is false, 
+                // only the following code is executed.
+
+
+                // Note disposing has been done.
+                _disposed = true;
+
             }
         }
 

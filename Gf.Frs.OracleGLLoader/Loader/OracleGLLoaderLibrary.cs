@@ -9,9 +9,23 @@ using System.Linq;
 
 namespace Gf.Frs.OracleGLLoader.Loader
 {
-    internal class OracleGLLoaderLibrary
+    internal class OracleGLLoaderLibrary: IDisposable
     {
-        public List<LoaderFault> OperationFaults = new List<LoaderFault>();
+        private List<LoaderFault> _operationFaults = new List<LoaderFault>();
+        private bool _disposed = false;
+
+        public List<LoaderFault> OperationFaults
+        {
+            get
+            {
+                return _operationFaults;
+            }
+
+            set
+            {
+                _operationFaults = value;
+            }
+        }
 
         internal bool ValidateContent(TextReader stream)
         {
@@ -57,6 +71,53 @@ namespace Gf.Frs.OracleGLLoader.Loader
             }
 
             return null;
+        }
+
+        // Implement IDisposable. 
+        // Do not make this method virtual. 
+        // A derived class should not be able to override this method. 
+        public void Dispose()
+        {
+            Dispose(true);
+            // This object will be cleaned up by the Dispose method. 
+            // Therefore, you should call GC.SupressFinalize to 
+            // take this object off the finalization queue 
+            // and prevent finalization code for this object 
+            // from executing a second time.
+            GC.SuppressFinalize(this);
+        }
+
+        // Dispose(bool disposing) executes in two distinct scenarios. 
+        // If disposing equals true, the method has been called directly 
+        // or indirectly by a user's code. Managed and unmanaged resources 
+        // can be disposed. 
+        // If disposing equals false, the method has been called by the 
+        // runtime from inside the finalizer and you should not reference 
+        // other objects. Only unmanaged resources can be disposed. 
+        protected virtual void Dispose(bool disposing)
+        {
+            // Check to see if Dispose has already been called. 
+            if (!_disposed)
+            {
+                // If disposing equals true, dispose all managed 
+                // and unmanaged resources. 
+                if (disposing)
+                {
+                    // Dispose managed resources.
+                    _operationFaults.Clear();
+                    _operationFaults = null;
+                }
+
+                // Call the appropriate methods to clean up 
+                // unmanaged resources here. 
+                // If disposing is false, 
+                // only the following code is executed.
+
+
+                // Note disposing has been done.
+                _disposed = true;
+
+            }
         }
 
         #region ##START## - Exception and Fault Methods"

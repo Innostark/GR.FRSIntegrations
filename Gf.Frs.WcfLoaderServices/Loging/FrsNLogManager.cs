@@ -1,12 +1,7 @@
-﻿using Gf.Frs.IntegrationCommon.DataModel;
-using Gf.Frs.LoaderWcfServices.InputOutput.Accounts.OracleGL;
-using Gf.Frs.LoaderWcfServices.InputOutput.Bank.MT940;
-using Gf.Frs.OracleGLLoader.DataModel;
-using NLog;
+﻿using NLog;
 using NLog.Config;
 using NLog.Targets;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Net;
@@ -15,9 +10,10 @@ using System.ServiceModel.Channels;
 
 namespace Gf.Frs.WcfLoaderServices.Loging
 {
-    public class FrsNLogManager: Logger, ILog
+    public class FrsNLogManager: Logger, ILog, IDisposable
     {
         string _currentLogerName;
+        bool _disposed = false;
 
         public Logger Instance { get; private set; }
         FrsNLogIntegrationServiceStoredProc LogingSPDetails = new FrsNLogIntegrationServiceStoredProc();
@@ -34,8 +30,6 @@ namespace Gf.Frs.WcfLoaderServices.Loging
                 _currentLogerName = value;
             }
         }
-
-
 
         public FrsNLogManager()
         {
@@ -209,7 +203,54 @@ namespace Gf.Frs.WcfLoaderServices.Loging
             FaultException fe = new FaultException(message);
             LogFromSPDetails(LogLevel.Fatal, message, null, fe);
             throw fe;
-        }    
+        }
+
+        // Implement IDisposable. 
+        // Do not make this method virtual. 
+        // A derived class should not be able to override this method. 
+        public void Dispose()
+        {
+            Dispose(true);
+            // This object will be cleaned up by the Dispose method. 
+            // Therefore, you should call GC.SupressFinalize to 
+            // take this object off the finalization queue 
+            // and prevent finalization code for this object 
+            // from executing a second time.
+            GC.SuppressFinalize(this);
+        }
+
+        // Dispose(bool disposing) executes in two distinct scenarios. 
+        // If disposing equals true, the method has been called directly 
+        // or indirectly by a user's code. Managed and unmanaged resources 
+        // can be disposed. 
+        // If disposing equals false, the method has been called by the 
+        // runtime from inside the finalizer and you should not reference 
+        // other objects. Only unmanaged resources can be disposed. 
+        protected virtual void Dispose(bool disposing)
+        {
+            // Check to see if Dispose has already been called. 
+            if (!_disposed)
+            {
+                // If disposing equals true, dispose all managed 
+                // and unmanaged resources. 
+                if (disposing)
+                {
+                    // Dispose managed resources.
+                    Instance = null;
+                    LogingSPDetails.Dispose();
+                }
+
+                // Call the appropriate methods to clean up 
+                // unmanaged resources here. 
+                // If disposing is false, 
+                // only the following code is executed.
+
+
+                // Note disposing has been done.
+                _disposed = true;
+
+            }
+        }
 
     }
 }

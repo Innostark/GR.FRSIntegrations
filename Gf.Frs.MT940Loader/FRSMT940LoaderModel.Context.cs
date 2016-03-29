@@ -40,5 +40,6 @@ namespace Gf.Frs.MT940Loader
         public virtual DbSet<MT940Load> MT940Load { get; set; }
         public virtual DbSet<Source> Sources { get; set; }
         public virtual DbSet<Status> Status { get; set; }
+        public virtual DbSet<LoadStatus> LoadStatus1 { get; set; }
     }
 }

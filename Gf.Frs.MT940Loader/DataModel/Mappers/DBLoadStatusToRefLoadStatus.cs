@@ -1,7 +1,7 @@
 ﻿using Gf.Frs.IntegrationCommon.DataModel;
 using System;
 
-namespace Gf.Frs.OracleGLLoader.DataModel.Mappers
+namespace Gf.Frs.MT940Loader.DataModel.Mappers
 {
     public static class DBLoadStatusToRefLoadStatus
     {

@@ -37,6 +37,9 @@
         <AssociationConnector Association="FRSMT940Loader.DBModel.FK_MT940CustomerStatementTransaction_MT940CustomerStatement" ManuallyRouted="false" />
         <AssociationConnector Association="FRSMT940Loader.DBModel.FK_MT940Load_Status" ManuallyRouted="false" />
         <AssociationConnector Association="FRSMT940Loader.DBModel.FK_Source_Status" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="FRSMT940Loader.DBModel.LoadStatus" Width="1.5" PointX="3" PointY="16" />
+        <AssociationConnector Association="FRSMT940Loader.DBModel.FK_Load_LoadStatus" />
+        <AssociationConnector Association="FRSMT940Loader.DBModel.FK_LoadStatus_Status" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

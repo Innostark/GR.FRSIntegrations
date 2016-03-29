@@ -14,7 +14,7 @@ using System.Net;
 using System.ServiceModel.Channels;
 using Gf.Frs.WcfLoaderServices.Loging;
 using System.Diagnostics;
-
+using Gf.Frs.IntegrationCommon.DataModel;
 
 namespace Gf.Frs.WcfLoaderServices.Accounts.OracleGL
 {

@@ -57,6 +57,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataModel\Mappers\DBLoadStatusToRefLoadStatus.cs" />
+    <Compile Include="DataModel\Mappers\DBStatusToRefStatus.cs" />
     <Compile Include="FRSMT940LoaderModel2.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -99,6 +101,9 @@
       <DependentUpon>FRSMT940LoaderModel.tt</DependentUpon>
     </Compile>
     <Compile Include="LoadMetaData.cs">
+      <DependentUpon>FRSMT940LoaderModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LoadStatus.cs">
       <DependentUpon>FRSMT940LoaderModel.tt</DependentUpon>
     </Compile>
     <Compile Include="LoadType.cs">

@@ -26,8 +26,11 @@ namespace Gf.Frs.MT940Loader
         public string ModifiedBy { get; set; }
         public System.DateTime ModifiedOn { get; set; }
         public string Name { get; set; }
+        public Nullable<long> OracleGLLoadId { get; set; }
+        public byte LoadStatusId { get; set; }
     
         public virtual LoadMetaData LoadMetaData { get; set; }
         public virtual MT940Load MT940Load { get; set; }
+        public virtual LoadStatus LoadStatu { get; set; }
     }
 }

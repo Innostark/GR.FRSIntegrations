@@ -8,6 +8,7 @@ using Gf.Frs.IntegrationCommon.Helpers;
 using Gf.Frs.OracleGLLoader.Fault;
 using System.IO;
 using Gf.Frs.OracleGLLoader.DataModel.Mappers;
+using Gf.Frs.IntegrationCommon.DataModel;
 
 namespace Gf.Frs.OracleGLLoader.Handlers
 {

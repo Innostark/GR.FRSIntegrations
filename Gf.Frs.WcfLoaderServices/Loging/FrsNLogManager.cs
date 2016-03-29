@@ -1,7 +1,12 @@
-﻿using NLog;
+﻿using Gf.Frs.IntegrationCommon.DataModel;
+using Gf.Frs.LoaderWcfServices.InputOutput.Accounts.OracleGL;
+using Gf.Frs.LoaderWcfServices.InputOutput.Bank.MT940;
+using Gf.Frs.OracleGLLoader.DataModel;
+using NLog;
 using NLog.Config;
 using NLog.Targets;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Net;
@@ -206,20 +211,51 @@ namespace Gf.Frs.WcfLoaderServices.Loging
             throw fe;
         }
 
-        public void LogFromSPDetails(LogLevel level, string message, string response = null, FaultException fe = null)
+        public void LoadFailedOracleGL(LoadOracleGLRequest request, List<RefDataLoadStatus> refLoadStatuses)
         {
-            LogEventInfo lei = new LogEventInfo()
+            //Update Load's Load Status to Failed in a new context
+            UpdateLoadStatusInNewContext(request.LoadId,
+                                         refLoadStatuses.Find(rls => rls.Name.ToLower().Equals(RefDataLoadStatus.LSFailed)),
+                                         request.UserId,
+                                         true);
+            #region **LOG ENTRY**
+            LogFromSPDetails(LogLevel.Info, "Oracle GL Load record status set to 'Failed'.");
+            #endregion **LOG ENTRY**
+        }
+
+        public void LoadFailedMT940(LoadMT940Request request, List<RefDataLoadStatus> refLoadStatuses)
+        {
+            //Update Load's Load Status to Failed in a new context
+            UpdateLoadStatusInNewContext(request.LoadId,
+                                         refLoadStatuses.Find(rls => rls.Name.ToLower().Equals(RefDataLoadStatus.LSFailed)),
+                                         request.UserId,
+                                         true);
+            #region **LOG ENTRY**
+            LogFromSPDetails(LogLevel.Info, "Oracle GL Load record status set to 'Failed'.");
+            #endregion **LOG ENTRY**
+        }
+
+        private void UpdateLoadStatusInNewContext(long loadId, RefDataLoadStatus loadStatus, string userId, bool readOnly)
+        {
+            using (FrsOracleGLLoaderContext context = new FrsOracleGLLoaderContext())
             {
-                LoggerName = CurrentLogerName
-            };
-            //Set logger details 
-            SetLoggerDetailsFromSPDetails(lei, response);
-            SetEventInfo(lei, level, message);
+                Load load = DbHandler.GetLoadById(context, loadId);
 
-            if (fe != null)
-                lei.Exception = fe;
+                if (load != null)
+                {
+                    load.InProgress = true;
+                    load.LoadStatusId = loadStatus.StatusId;
+                    load.ModifiedBy = userId;
+                    load.ReadOnly = readOnly;
 
-            LogManager.Instance.Log(lei);
+                    context.Entry(load).Property(e => e.InProgress).IsModified = true;
+                    context.Entry(load).Property(e => e.LoadStatusId).IsModified = true;
+                    context.Entry(load).Property(e => e.ModifiedBy).IsModified = true;
+                    context.Entry(load).Property(e => e.ReadOnly).IsModified = true;
+
+                    context.SaveChanges();
+                }
+            }
         }
 
     }

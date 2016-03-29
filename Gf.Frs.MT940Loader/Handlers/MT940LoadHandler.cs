@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Gf.Frs.IntegrationCommon.Fault;
 using Gf.Frs.MT940Loader.Loader;
 using Gf.Frs.IntegrationCommon.Helpers;
+using Gf.Frs.IntegrationCommon.DataModel;
 
 namespace Gf.Frs.MT940Loader.Handlers
 {
@@ -358,6 +359,41 @@ namespace Gf.Frs.MT940Loader.Handlers
         {
             return Convert.ToInt16(_processedCustomerStatementCount);
         }
+
+        /// <summary>
+        /// Method to load the Reference data Load Statuses
+        /// </summary>
+        /// <returns>A list of Ref Load Statuses</returns>
+        public List<RefDataLoadStatus> GetLoadStatuses()
+        {
+            List<RefDataLoadStatus> refDataLoadStatuses = new List<RefDataLoadStatus>();
+
+            foreach (LoadStatus loadStatus in _dbHandler.DbContext.LoadStatus.ToList())
+            {
+                RefDataLoadStatus refDataLoadStatus = new RefDataLoadStatus();
+                refDataLoadStatuses.Add(DBLoadStatusToRefLoadStatus.MapToLoader(loadStatus, out refDataLoadStatus));
+            }
+
+            return refDataLoadStatuses;
+        }
+
+        /// <summary>
+        /// Method to load the Reference data Statuses
+        /// </summary>
+        /// <returns></returns>
+        public List<RefDataStatus> GetStatuses()
+        {
+            List<RefDataStatus> refDataStatuses = new List<RefDataStatus>();
+
+            foreach (Status status in _dbHandler.DbContext.Status.ToList())
+            {
+                RefDataStatus refDataStatus = new RefDataStatus();
+                refDataStatuses.Add(DBStatusToRefStatus.MapToLoader(status, out refDataStatus));
+            }
+
+            return refDataStatuses;
+        }
+
 
         #endregion **END - Public Methods**
     }

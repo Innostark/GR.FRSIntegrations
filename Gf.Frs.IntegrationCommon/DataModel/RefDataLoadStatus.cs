@@ -1,4 +1,4 @@
-﻿namespace Gf.Frs.OracleGLLoader.DataModel
+﻿namespace Gf.Frs.IntegrationCommon.DataModel
 {
     public class RefDataLoadStatus
     {

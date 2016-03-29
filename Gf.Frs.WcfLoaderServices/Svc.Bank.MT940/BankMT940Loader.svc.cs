@@ -1,5 +1,5 @@
 ﻿using DevTrends.WCFDataAnnotations;
-
+using Gf.Frs.IntegrationCommon.DataModel;
 using Gf.Frs.IntegrationCommon.Fault;
 using Gf.Frs.IntegrationCommon.Helpers;
 using Gf.Frs.LoaderWcfServices.InputOutput.Bank.MT940;
@@ -21,7 +21,7 @@ namespace Gf.Frs.WcfLoaderServices.Bank.MT940
         const string CurrentLogerName = "BankMT940Loader.LoadMT940";
         FrsNLogManager LogManager = new FrsNLogManager();
         FrsNLogIntegrationServiceStoredProc LogingSPDetails = new FrsNLogIntegrationServiceStoredProc();                
-        MT940LoadHandler mt940LoadHandler = new MT940LoadHandler();
+        MT940LoadHandler Mt940LoadHandler = new MT940LoadHandler();
         Stopwatch Timer = null;
 
         public LoadMT940Response LoadMT940(LoadMT940Request request)
@@ -97,7 +97,7 @@ namespace Gf.Frs.WcfLoaderServices.Bank.MT940
                 #endregion **LOG ENTRY**
 
                 //Validate the Load object fully, including the associated objects
-                faults = mt940LoadHandler.ValidateLoadForNullOrEmpty(request.LoadId);
+                faults = Mt940LoadHandler.ValidateLoadForNullOrEmpty(request.LoadId);
             }
             catch (Exception ex)
             {
@@ -121,24 +121,69 @@ namespace Gf.Frs.WcfLoaderServices.Bank.MT940
             #endregion **LOG ENTRY**
 
             //Get load object from database (to be used through out the code for this call)
-            Load dbLoad = mt940LoadHandler.GetLoad(request.LoadId);
+            Load dbLoad = Mt940LoadHandler.GetLoad(request.LoadId);
 
             #region **LOG ENTRY**
-            LogFromSPDetails(LogLevel.Info, string.Format("Load (Load Id = {0}), successfully found in the database.", request.LoadId));
+            LogManager.LogFromSPDetails(LogLevel.Info, string.Format("Load (Load Id = {0}), successfully found in the database.", request.LoadId));
             #endregion **LOG ENTRY**
 
             #region **LOG ENTRY**
-            LogFromSPDetails(LogLevel.Info, "Loading reference data for the operation.");
+            LogManager.LogFromSPDetails(LogLevel.Info, "Loading reference data for the operation.");
             #endregion **LOG ENTRY**
+
+            #region ##START## Load Reference data from DB            
+            //Load required reference data
+            List<RefDataLoadStatus> refLoadStatuses = Mt940LoadHandler.GetLoadStatuses();
+            List<RefDataStatus> refStatuses = Mt940LoadHandler.GetStatuses();
+
+            #region **LOG ENTRY**
+            LogManager.LogFromSPDetails(LogLevel.Info, "Reference data loaded successfully.");
+            #endregion **LOG ENTRY**
+
+            #endregion
+
+            #region **LOG ENTRY**
+            LogManager.LogFromSPDetails(LogLevel.Info, "Validating the load record against reference data i.e. Read-only & Load Status.");
+            #endregion **LOG ENTRY**
+
+            if (dbLoad.ReadOnly || dbLoad.LoadStatusId != refLoadStatuses.Find(rls => rls.Name.ToLower().Equals(RefDataLoadStatus.LSSubmitted)).Value)
+            {
+                //Update Load's Load Status to Failed in a new context
+                LogManager.LoadFailedMT940(request, refLoadStatuses);
+
+                LogManager.RaiseException(string.Format("Error! during Oracle GL load checking of Load Id = {1}.{0}Fault details:{0}{2}",
+                                                        Environment.NewLine,
+                                                        request.LoadId,
+                                                        "Load is not valid! It's either set to Read Only or Load Status is not submitted. The Loads Status has been updated to 'Failed'."));
+            }
+
+            #region **LOG ENTRY**
+            LogFromSPDetails(LogLevel.Info, "Reference data validation completed successfully.");
+            #endregion **LOG ENTRY**
+
+            //Update Load's Load Status to Parsing in a new context
+            OracleGLLoadHndlr.UpdateLoadStatusInNewContext(request.LoadId,
+                                                             refLoadStatuses.Find(rls => rls.Name.ToLower().Equals(RefDataLoadStatus.LSParsing)),
+                                                             request.UserId,
+                                                             true);
+            #region **LOG ENTRY**
+            LogFromSPDetails(LogLevel.Info, "Oracle GL Load status set to 'Parsing'.");
+            #endregion **LOG ENTRY**
+
+
+
+
+
+
 
             //Very important to set the header and trailer as these are going to be used later throughout this processing
-            mt940LoadHandler.SetHeaderTrailer(dbLoad.LoadMetaData.Header, dbLoad.LoadMetaData.Trailer);
+            Mt940LoadHandler.SetHeaderTrailer(dbLoad.LoadMetaData.Header, dbLoad.LoadMetaData.Trailer);
 
             #region MT940 Content validaton
             try
             {
                 //Validate the MT940 Base64 contents
-                faults = mt940LoadHandler.ValidateMT940FileContent(dbLoad.MT940Load.FileContent.FileContentBase64);
+                faults = Mt940LoadHandler.ValidateMT940FileContent(dbLoad.MT940Load.FileContent.FileContentBase64);
             }
             catch (Exception ex)
             {
@@ -161,7 +206,7 @@ namespace Gf.Frs.WcfLoaderServices.Bank.MT940
             try
             {
                 //Load the MT940 file data into objects and then to the database
-                mt940LoadHandler.LoadMT940(dbLoad, dbLoad.MT940Load.FileContent.FileContentBase64, request.UserId);
+                Mt940LoadHandler.LoadMT940(dbLoad, dbLoad.MT940Load.FileContent.FileContentBase64, request.UserId);
             }
             catch (Exception ex)
             {
@@ -178,7 +223,7 @@ namespace Gf.Frs.WcfLoaderServices.Bank.MT940
             {
                 DateTime updateTime = DateTime.UtcNow;
                 //MT940 Load record fields to be updated
-                dbLoad.MT940Load.CustomerStatementCount = mt940LoadHandler.GetProcessedCustomerStatementCount();
+                dbLoad.MT940Load.CustomerStatementCount = Mt940LoadHandler.GetProcessedCustomerStatementCount();
                 dbLoad.MT940Load.ModifiedBy = request.UserId;
 
                 //Load records field to be updated                                
@@ -187,7 +232,7 @@ namespace Gf.Frs.WcfLoaderServices.Bank.MT940
                 dbLoad.ModifiedBy = request.UserId;
 
                 //Perform the database update
-                mt940LoadHandler.SummariseMT940LoadOnCompletion(dbLoad, dbLoad.MT940Load);
+                Mt940LoadHandler.SummariseMT940LoadOnCompletion(dbLoad, dbLoad.MT940Load);
             }
             catch (Exception ex)
             {

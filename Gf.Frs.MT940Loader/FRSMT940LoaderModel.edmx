@@ -72,10 +72,12 @@
           <Property Name="LoadId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LoadMetaDataId" Type="tinyint" Nullable="false" />
           <Property Name="MT940LoadId" Type="bigint" />
+          <Property Name="OracleGLLoadId" Type="bigint" />
           <Property Name="Name" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="Start" Type="datetime" Nullable="false" />
           <Property Name="Finish" Type="datetime" />
           <Property Name="InProgress" Type="bit" Nullable="false" />
+          <Property Name="LoadStatusId" Type="tinyint" Nullable="false" />
           <Property Name="ReadOnly" Type="bit" Nullable="false" />
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="CreatedOn" Type="datetime2" Precision="7" Nullable="false" />
@@ -98,6 +100,14 @@
           <Property Name="CreatedOn" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="ModifiedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="ModifiedOn" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="StatusId" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LoadStatus">
+          <Key>
+            <PropertyRef Name="Value" />
+          </Key>
+          <Property Name="Value" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="15" Nullable="false" />
           <Property Name="StatusId" Type="tinyint" Nullable="false" />
         </EntityType>
         <EntityType Name="LoadType">
@@ -199,9 +209,9 @@
           <Property Name="CustomerStatementCount" Type="int" Nullable="false" />
           <Property Name="FileContentId" Type="bigint" Nullable="false" />
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime2" Precision="7" />
           <Property Name="ModifiedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="ModifiedOn" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedOn" Type="datetime2" Precision="7" Nullable="false" />
         </EntityType>
         <EntityType Name="Source">
           <Key>
@@ -290,27 +300,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Load_LoadMetaData">
-          <End Role="LoadMetaData" Type="Self.LoadMetaData" Multiplicity="1" />
+        <Association Name="FK_Load_LoadStatus">
+          <End Role="LoadStatus" Type="Self.LoadStatus" Multiplicity="1" />
           <End Role="Load" Type="Self.Load" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="LoadMetaData">
-              <PropertyRef Name="LoadMetaDataId" />
+            <Principal Role="LoadStatus">
+              <PropertyRef Name="Value" />
             </Principal>
             <Dependent Role="Load">
-              <PropertyRef Name="LoadMetaDataId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Load_MT940Load">
-          <End Role="MT940Load" Type="Self.MT940Load" Multiplicity="0..1" />
-          <End Role="Load" Type="Self.Load" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MT940Load">
-              <PropertyRef Name="MT940LoadId" />
-            </Principal>
-            <Dependent Role="Load">
-              <PropertyRef Name="MT940LoadId" />
+              <PropertyRef Name="LoadStatusId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -346,6 +344,18 @@
               <PropertyRef Name="Value" />
             </Principal>
             <Dependent Role="LoadMetaData">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoadStatus_Status">
+          <End Role="Status" Type="Self.Status" Multiplicity="1" />
+          <End Role="LoadStatus" Type="Self.LoadStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="Value" />
+            </Principal>
+            <Dependent Role="LoadStatus">
               <PropertyRef Name="StatusId" />
             </Dependent>
           </ReferentialConstraint>
@@ -430,6 +440,7 @@
           <EntitySet Name="FileContent" EntityType="Self.FileContent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Load" EntityType="Self.Load" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LoadMetaData" EntityType="Self.LoadMetaData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LoadStatus" EntityType="Self.LoadStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LoadType" EntityType="Self.LoadType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MT940Balance" EntityType="Self.MT940Balance" Schema="dbo" store:Type="Tables" />
@@ -462,12 +473,8 @@
             <End Role="MT940Balance" EntitySet="MT940Balance" />
             <End Role="MT940CustomerStatement" EntitySet="MT940CustomerStatement" />
           </AssociationSet>
-          <AssociationSet Name="FK_Load_LoadMetaData" Association="Self.FK_Load_LoadMetaData">
-            <End Role="LoadMetaData" EntitySet="LoadMetaData" />
-            <End Role="Load" EntitySet="Load" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Load_MT940Load" Association="Self.FK_Load_MT940Load">
-            <End Role="MT940Load" EntitySet="MT940Load" />
+          <AssociationSet Name="FK_Load_LoadStatus" Association="Self.FK_Load_LoadStatus">
+            <End Role="LoadStatus" EntitySet="LoadStatus" />
             <End Role="Load" EntitySet="Load" />
           </AssociationSet>
           <AssociationSet Name="FK_LoadMetaData_LoadType" Association="Self.FK_LoadMetaData_LoadType">
@@ -481,6 +488,10 @@
           <AssociationSet Name="FK_LoadMetaData_Status" Association="Self.FK_LoadMetaData_Status">
             <End Role="Status" EntitySet="Status" />
             <End Role="LoadMetaData" EntitySet="LoadMetaData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoadStatus_Status" Association="Self.FK_LoadStatus_Status">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="LoadStatus" EntitySet="LoadStatus" />
           </AssociationSet>
           <AssociationSet Name="FK_LoadType_Status" Association="Self.FK_LoadType_Status">
             <End Role="Status" EntitySet="Status" />
@@ -593,6 +604,9 @@
           <Property Name="Name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="LoadMetaData" Relationship="Self.FK_Load_LoadMetaData" FromRole="Load" ToRole="LoadMetaData" />
           <NavigationProperty Name="MT940Load" Relationship="Self.FK_Load_MT940Load" FromRole="Load" ToRole="MT940Load" />
+          <Property Name="OracleGLLoadId" Type="Int64" />
+          <Property Name="LoadStatusId" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="LoadStatu" Relationship="FRSMT940Loader.DBModel.FK_Load_LoadStatus" FromRole="Load" ToRole="LoadStatu" />
         </EntityType>
         <EntityType Name="LoadMetaData">
           <Key>
@@ -729,9 +743,9 @@
           <Property Name="CustomerStatementCount" Type="Int32" Nullable="false" />
           <Property Name="FileContentId" Type="Int64" Nullable="false" />
           <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="7" />
           <Property Name="ModifiedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ModifiedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedOn" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="FileContent" Relationship="Self.FK_MT940Load_FileContent" FromRole="MT940Load" ToRole="FileContent" />
           <NavigationProperty Name="Loads" Relationship="Self.FK_Load_MT940Load" FromRole="MT940Load" ToRole="Load" />
           <NavigationProperty Name="MT940CustomerStatement" Relationship="Self.FK_MT940CustomerStatement_MT940Load" FromRole="MT940Load" ToRole="MT940CustomerStatement" />
@@ -757,6 +771,7 @@
           <NavigationProperty Name="LoadTypes" Relationship="Self.FK_LoadType_Status" FromRole="Status" ToRole="LoadType" />
           <NavigationProperty Name="MT940Load" Relationship="Self.FK_MT940Load_Status" FromRole="Status" ToRole="MT940Load" />
           <NavigationProperty Name="Sources" Relationship="Self.FK_Source_Status" FromRole="Status" ToRole="Source" />
+          <NavigationProperty Name="LoadStatus" Relationship="FRSMT940Loader.DBModel.FK_LoadStatus_Status" FromRole="Status" ToRole="LoadStatu" />
         </EntityType>
         <Association Name="FK_AspNetUsers_Employee">
           <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
@@ -1046,7 +1061,50 @@
             <End Role="Status" EntitySet="Status" />
             <End Role="Source" EntitySet="Sources" />
           </AssociationSet>
+          <EntitySet Name="LoadStatus1" EntityType="FRSMT940Loader.DBModel.LoadStatus" />
+          <AssociationSet Name="FK_Load_LoadStatus" Association="FRSMT940Loader.DBModel.FK_Load_LoadStatus">
+            <End Role="LoadStatu" EntitySet="LoadStatus1" />
+            <End Role="Load" EntitySet="Loads" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoadStatus_Status" Association="FRSMT940Loader.DBModel.FK_LoadStatus_Status">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="LoadStatu" EntitySet="LoadStatus1" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="LoadStatus">
+          <Key>
+            <PropertyRef Name="Value" />
+          </Key>
+          <Property Name="Value" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="StatusId" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="Loads" Relationship="FRSMT940Loader.DBModel.FK_Load_LoadStatus" FromRole="LoadStatu" ToRole="Load" />
+          <NavigationProperty Name="Status" Relationship="FRSMT940Loader.DBModel.FK_LoadStatus_Status" FromRole="LoadStatu" ToRole="Status" />
+        </EntityType>
+        <Association Name="FK_Load_LoadStatus">
+          <End Type="FRSMT940Loader.DBModel.LoadStatus" Role="LoadStatu" Multiplicity="1" />
+          <End Type="FRSMT940Loader.DBModel.Load" Role="Load" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LoadStatu">
+              <PropertyRef Name="Value" />
+            </Principal>
+            <Dependent Role="Load">
+              <PropertyRef Name="LoadStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoadStatus_Status">
+          <End Type="FRSMT940Loader.DBModel.Status" Role="Status" Multiplicity="1" />
+          <End Type="FRSMT940Loader.DBModel.LoadStatus" Role="LoadStatu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="Value" />
+            </Principal>
+            <Dependent Role="LoadStatu">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1121,6 +1179,8 @@
           <EntitySetMapping Name="Loads">
             <EntityTypeMapping TypeName="FRSMT940Loader.DBModel.Load">
               <MappingFragment StoreEntitySet="Load">
+                <ScalarProperty Name="LoadStatusId" ColumnName="LoadStatusId" />
+                <ScalarProperty Name="OracleGLLoadId" ColumnName="OracleGLLoadId" />
                 <ScalarProperty Name="LoadId" ColumnName="LoadId" />
                 <ScalarProperty Name="LoadMetaDataId" ColumnName="LoadMetaDataId" />
                 <ScalarProperty Name="MT940LoadId" ColumnName="MT940LoadId" />
@@ -1278,6 +1338,15 @@
               <MappingFragment StoreEntitySet="Status">
                 <ScalarProperty Name="Value" ColumnName="Value" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LoadStatus1">
+            <EntityTypeMapping TypeName="FRSMT940Loader.DBModel.LoadStatus">
+              <MappingFragment StoreEntitySet="LoadStatus">
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -6,7 +6,7 @@ namespace Gf.Frs.OracleGLLoader.Handlers
     {
         private FrsOracleGLLoaderContext _dbContext;
 
-        internal FrsOracleGLLoaderContext DbContext
+        public FrsOracleGLLoaderContext DbContext
         {
             get
             {
@@ -21,7 +21,7 @@ namespace Gf.Frs.OracleGLLoader.Handlers
 
         public OracleGLDatabaseHandler()
         {
-            _dbContext = new FrsOracleGLLoaderContext();
+            base.DbContext = new FrsOracleGLLoaderContext();
         }
 
         public Load GetLoadById(long loadId)
@@ -46,8 +46,8 @@ namespace Gf.Frs.OracleGLLoader.Handlers
 
         public void PreDispose()
         {
-            _dbContext.Dispose();
-            _dbContext = null;
+            DbContext.Dispose();
+            DbContext = null;
         }
     }
 }

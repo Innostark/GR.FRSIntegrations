@@ -12,32 +12,20 @@ namespace Gf.Frs.MT940Loader
     using System;
     using System.Collections.Generic;
     
-    public partial class MT940Load
+    public partial class LoadStatus
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public MT940Load()
+        public LoadStatus()
         {
             this.Loads = new HashSet<Load>();
-            this.MT940CustomerStatement = new HashSet<MT940CustomerStatement>();
         }
     
-        public long MT940LoadId { get; set; }
-        public string Path { get; set; }
-        public string FileName { get; set; }
-        public string FileExtension { get; set; }
+        public byte Value { get; set; }
+        public string Name { get; set; }
         public byte StatusId { get; set; }
-        public int CustomerStatementCount { get; set; }
-        public long FileContentId { get; set; }
-        public string CreatedBy { get; set; }
-        public Nullable<System.DateTime> CreatedOn { get; set; }
-        public string ModifiedBy { get; set; }
-        public System.DateTime ModifiedOn { get; set; }
     
-        public virtual FileContent FileContent { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Load> Loads { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MT940CustomerStatement> MT940CustomerStatement { get; set; }
         public virtual Status Status { get; set; }
     }
 }

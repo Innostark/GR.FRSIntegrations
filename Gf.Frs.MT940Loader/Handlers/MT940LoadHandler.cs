@@ -7,6 +7,8 @@ using Gf.Frs.IntegrationCommon.Fault;
 using Gf.Frs.MT940Loader.Loader;
 using Gf.Frs.IntegrationCommon.Helpers;
 using Gf.Frs.IntegrationCommon.DataModel;
+using Gf.Frs.MT940Loader.DataModel;
+using Gf.Frs.MT940Loader.DataModel.Mappers;
 
 namespace Gf.Frs.MT940Loader.Handlers
 {
@@ -157,7 +159,7 @@ namespace Gf.Frs.MT940Loader.Handlers
 
         private MT940Balance AddMT940Balance(TransactionBalance transactionBalance, string userId)
         {
-            Currency currency = (from c in _dbHandler.DbContext.Currencies
+            DataModel.Currency currency = (from c in _dbHandler.DbContext.Currencies
                                             where c.Name == transactionBalance.Currency.Code
                                             select c).FirstOrDefault();
 
@@ -392,6 +394,29 @@ namespace Gf.Frs.MT940Loader.Handlers
             }
 
             return refDataStatuses;
+        }
+
+        public void UpdateLoadStatusInNewContext(long loadId, RefDataLoadStatus loadStatus, string userId, bool readOnly)
+        {
+            using (FRSMT940LoaderContext context = new FRSMT940LoaderContext())
+            {
+                Load load = DbHandler.GetLoadById(context, loadId);
+
+                if (load != null)
+                {
+                    load.InProgress = true;
+                    load.LoadStatusId = loadStatus.StatusId;
+                    load.ModifiedBy = userId;
+                    load.ReadOnly = readOnly;
+
+                    context.Entry(load).Property(e => e.InProgress).IsModified = true;
+                    context.Entry(load).Property(e => e.LoadStatusId).IsModified = true;
+                    context.Entry(load).Property(e => e.ModifiedBy).IsModified = true;
+                    context.Entry(load).Property(e => e.ReadOnly).IsModified = true;
+
+                    context.SaveChanges();
+                }
+            }
         }
 
 

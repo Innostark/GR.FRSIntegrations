@@ -209,54 +209,7 @@ namespace Gf.Frs.WcfLoaderServices.Loging
             FaultException fe = new FaultException(message);
             LogFromSPDetails(LogLevel.Fatal, message, null, fe);
             throw fe;
-        }
-
-        public void LoadFailedOracleGL(LoadOracleGLRequest request, List<RefDataLoadStatus> refLoadStatuses)
-        {
-            //Update Load's Load Status to Failed in a new context
-            UpdateLoadStatusInNewContext(request.LoadId,
-                                         refLoadStatuses.Find(rls => rls.Name.ToLower().Equals(RefDataLoadStatus.LSFailed)),
-                                         request.UserId,
-                                         true);
-            #region **LOG ENTRY**
-            LogFromSPDetails(LogLevel.Info, "Oracle GL Load record status set to 'Failed'.");
-            #endregion **LOG ENTRY**
-        }
-
-        public void LoadFailedMT940(LoadMT940Request request, List<RefDataLoadStatus> refLoadStatuses)
-        {
-            //Update Load's Load Status to Failed in a new context
-            UpdateLoadStatusInNewContext(request.LoadId,
-                                         refLoadStatuses.Find(rls => rls.Name.ToLower().Equals(RefDataLoadStatus.LSFailed)),
-                                         request.UserId,
-                                         true);
-            #region **LOG ENTRY**
-            LogFromSPDetails(LogLevel.Info, "Oracle GL Load record status set to 'Failed'.");
-            #endregion **LOG ENTRY**
-        }
-
-        private void UpdateLoadStatusInNewContext(long loadId, RefDataLoadStatus loadStatus, string userId, bool readOnly)
-        {
-            using (FrsOracleGLLoaderContext context = new FrsOracleGLLoaderContext())
-            {
-                Load load = DbHandler.GetLoadById(context, loadId);
-
-                if (load != null)
-                {
-                    load.InProgress = true;
-                    load.LoadStatusId = loadStatus.StatusId;
-                    load.ModifiedBy = userId;
-                    load.ReadOnly = readOnly;
-
-                    context.Entry(load).Property(e => e.InProgress).IsModified = true;
-                    context.Entry(load).Property(e => e.LoadStatusId).IsModified = true;
-                    context.Entry(load).Property(e => e.ModifiedBy).IsModified = true;
-                    context.Entry(load).Property(e => e.ReadOnly).IsModified = true;
-
-                    context.SaveChanges();
-                }
-            }
-        }
+        }    
 
     }
 }

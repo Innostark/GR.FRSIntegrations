@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Gf.Frs.MT940Loader
+namespace Gf.Frs.MT940Loader.DataModel
 {
     using System;
     using System.Collections.Generic;

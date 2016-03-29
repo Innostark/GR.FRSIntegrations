@@ -1,4 +1,6 @@
-﻿namespace Gf.Frs.MT940Loader.Handlers
+﻿using Gf.Frs.MT940Loader.DataModel;
+
+namespace Gf.Frs.MT940Loader.Handlers
 {
     internal class MT940DatabaseHandler
     {
@@ -25,6 +27,11 @@
         public Load GetLoadById(long loadId)
         {
             return _dbContext.Loads.Find(loadId);
+        }
+
+        public Load GetLoadById(FRSMT940LoaderContext context, long loadId)
+        {
+            return context.Loads.Find(loadId);
         }
 
         public LoadMetaData GetLoadMetadataById(short id)

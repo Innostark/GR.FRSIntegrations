@@ -7,24 +7,29 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Gf.Frs.MT940Loader
+namespace Gf.Frs.MT940Loader.DataModel
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Currency
+    public partial class FileContent
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Currency()
+        public FileContent()
         {
-            this.MT940Balance = new HashSet<MT940Balance>();
+            this.MT940Load = new HashSet<MT940Load>();
         }
     
-        public byte Value { get; set; }
-        public string Name { get; set; }
-        public string Sign { get; set; }
+        public long FileContentId { get; set; }
+        public byte[] FileContent1 { get; set; }
+        public string FileContentBase64 { get; set; }
+        public string Description { get; set; }
+        public string CreatedBy { get; set; }
+        public System.DateTime CreatedOn { get; set; }
+        public string ModifiedBy { get; set; }
+        public System.DateTime ModifiedOn { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MT940Balance> MT940Balance { get; set; }
+        public virtual ICollection<MT940Load> MT940Load { get; set; }
     }
 }

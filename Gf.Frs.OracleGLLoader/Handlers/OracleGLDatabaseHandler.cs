@@ -21,7 +21,7 @@ namespace Gf.Frs.OracleGLLoader.Handlers
 
         public OracleGLDatabaseHandler()
         {
-            base.DbContext = new FrsOracleGLLoaderContext();
+            _dbContext = new FrsOracleGLLoaderContext();
         }
 
         public Load GetLoadById(long loadId)

@@ -1061,14 +1061,14 @@
             <End Role="Status" EntitySet="Status" />
             <End Role="Source" EntitySet="Sources" />
           </AssociationSet>
-          <EntitySet Name="LoadStatus1" EntityType="FRSMT940Loader.DBModel.LoadStatus" />
+          <EntitySet Name="LoadStatus" EntityType="FRSMT940Loader.DBModel.LoadStatus" />
           <AssociationSet Name="FK_Load_LoadStatus" Association="FRSMT940Loader.DBModel.FK_Load_LoadStatus">
-            <End Role="LoadStatu" EntitySet="LoadStatus1" />
+            <End Role="LoadStatu" EntitySet="LoadStatus" />
             <End Role="Load" EntitySet="Loads" />
           </AssociationSet>
           <AssociationSet Name="FK_LoadStatus_Status" Association="FRSMT940Loader.DBModel.FK_LoadStatus_Status">
             <End Role="Status" EntitySet="Status" />
-            <End Role="LoadStatu" EntitySet="LoadStatus1" />
+            <End Role="LoadStatu" EntitySet="LoadStatus" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="LoadStatus">
@@ -1341,7 +1341,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="LoadStatus1">
+          <EntitySetMapping Name="LoadStatus">
             <EntityTypeMapping TypeName="FRSMT940Loader.DBModel.LoadStatus">
               <MappingFragment StoreEntitySet="LoadStatus">
                 <ScalarProperty Name="StatusId" ColumnName="StatusId" />

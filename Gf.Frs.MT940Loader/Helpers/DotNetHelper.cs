@@ -1,4 +1,4 @@
-﻿using Gf.Frs.MT940Loader;
+﻿using Gf.Frs.MT940Loader.DataModel;
 using Raptorious.SharpMt940Lib;
 
 namespace Gf.Frs.IntegrationCommon.Helpers

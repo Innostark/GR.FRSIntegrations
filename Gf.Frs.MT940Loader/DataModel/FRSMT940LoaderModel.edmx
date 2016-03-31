@@ -91,8 +91,8 @@
           <Property Name="LoadMetaDataId" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LoadTypeId" Type="tinyint" Nullable="false" />
           <Property Name="SourceId" Type="tinyint" Nullable="false" />
-          <Property Name="Header" Type="nvarchar" MaxLength="256" Nullable="false" />
-          <Property Name="Trailer" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Header" Type="nvarchar" MaxLength="256" />
+          <Property Name="Trailer" Type="nvarchar" MaxLength="256" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="CurrencyId" Type="tinyint" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="1024" />
@@ -212,6 +212,35 @@
           <Property Name="CreatedOn" Type="datetime2" Precision="7" />
           <Property Name="ModifiedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="ModifiedOn" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ServiceLog">
+          <Key>
+            <PropertyRef Name="ServiceLogID" />
+          </Key>
+          <Property Name="ServiceLogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MachineName" Type="nvarchar" MaxLength="200" />
+          <Property Name="SiteName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Logged" Type="datetime" Nullable="false" />
+          <Property Name="Level" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Application" Type="nvarchar" MaxLength="200" />
+          <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Logger" Type="nvarchar" MaxLength="300" />
+          <Property Name="Properties" Type="nvarchar(max)" />
+          <Property Name="ServerName" Type="nvarchar" MaxLength="200" />
+          <Property Name="Port" Type="nvarchar" MaxLength="100" />
+          <Property Name="SessionId" Type="nvarchar" MaxLength="100" />
+          <Property Name="ThreadId" Type="int" />
+          <Property Name="CallerDetails" Type="nvarchar" MaxLength="1024" />
+          <Property Name="RequestDump" Type="nvarchar" MaxLength="1024" />
+          <Property Name="ResponseDump" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Url" Type="nvarchar" MaxLength="2000" />
+          <Property Name="Https" Type="bit" />
+          <Property Name="ServerAddress" Type="nvarchar" MaxLength="100" />
+          <Property Name="RemoteAddress" Type="nvarchar" MaxLength="100" />
+          <Property Name="Callsite" Type="nvarchar" MaxLength="300" />
+          <Property Name="PartitionKey" Type="tinyint" Nullable="false" />
+          <Property Name="Exception" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Source">
           <Key>
@@ -432,6 +461,47 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="WriteLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EventID" Type="int" Mode="In" />
+          <Parameter Name="Priority" Type="int" Mode="In" />
+          <Parameter Name="Severity" Type="nvarchar" Mode="In" />
+          <Parameter Name="Title" Type="nvarchar" Mode="In" />
+          <Parameter Name="Timestamp" Type="datetime" Mode="In" />
+          <Parameter Name="MachineName" Type="nvarchar" Mode="In" />
+          <Parameter Name="AppDomainName" Type="nvarchar" Mode="In" />
+          <Parameter Name="ProcessID" Type="nvarchar" Mode="In" />
+          <Parameter Name="ProcessName" Type="nvarchar" Mode="In" />
+          <Parameter Name="ThreadName" Type="nvarchar" Mode="In" />
+          <Parameter Name="Win32ThreadId" Type="nvarchar" Mode="In" />
+          <Parameter Name="Message" Type="nvarchar" Mode="In" />
+          <Parameter Name="FormattedMessage" Type="ntext" Mode="In" />
+          <Parameter Name="LogId" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="WriteServiceLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="machineName" Type="nvarchar" Mode="In" />
+          <Parameter Name="siteName" Type="nvarchar" Mode="In" />
+          <Parameter Name="logged" Type="datetime" Mode="In" />
+          <Parameter Name="level" Type="varchar" Mode="In" />
+          <Parameter Name="userName" Type="nvarchar" Mode="In" />
+          <Parameter Name="Application" Type="nvarchar" Mode="In" />
+          <Parameter Name="message" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="logger" Type="nvarchar" Mode="In" />
+          <Parameter Name="properties" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="serverName" Type="nvarchar" Mode="In" />
+          <Parameter Name="port" Type="nvarchar" Mode="In" />
+          <Parameter Name="SessionId" Type="nvarchar" Mode="In" />
+          <Parameter Name="ThreadId" Type="int" Mode="In" />
+          <Parameter Name="CallerDetails" Type="nvarchar" Mode="In" />
+          <Parameter Name="RequestDump" Type="nvarchar" Mode="In" />
+          <Parameter Name="ResponseDump" Type="nvarchar" Mode="In" />
+          <Parameter Name="url" Type="nvarchar" Mode="In" />
+          <Parameter Name="https" Type="bit" Mode="In" />
+          <Parameter Name="serverAddress" Type="nvarchar" Mode="In" />
+          <Parameter Name="remoteAddress" Type="nvarchar" Mode="In" />
+          <Parameter Name="callSite" Type="nvarchar" Mode="In" />
+          <Parameter Name="PartitionKey" Type="tinyint" Mode="In" />
+          <Parameter Name="exception" Type="nvarchar(max)" Mode="In" />
+        </Function>
         <EntityContainer Name="FRSMT940LoaderDBModelStoreContainer">
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
@@ -447,6 +517,7 @@
           <EntitySet Name="MT940CustomerStatement" EntityType="Self.MT940CustomerStatement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MT940CustomerStatementTransaction" EntityType="Self.MT940CustomerStatementTransaction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MT940Load" EntityType="Self.MT940Load" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ServiceLog" EntityType="Self.ServiceLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Source" EntityType="Self.Source" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_AspNetUsers_Employee" Association="Self.FK_AspNetUsers_Employee">
@@ -615,8 +686,8 @@
           <Property Name="LoadMetaDataId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LoadTypeId" Type="Byte" Nullable="false" />
           <Property Name="SourceId" Type="Byte" Nullable="false" />
-          <Property Name="Header" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Trailer" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Header" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Trailer" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CurrencyId" Type="Byte" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
@@ -1070,6 +1141,48 @@
             <End Role="Status" EntitySet="Status" />
             <End Role="LoadStatu" EntitySet="LoadStatus" />
           </AssociationSet>
+          <EntitySet Name="ServiceLogs" EntityType="FRSMT940Loader.DBModel.ServiceLog" />
+          <FunctionImport Name="WriteLog">
+            <Parameter Name="EventID" Mode="In" Type="Int32" />
+            <Parameter Name="Priority" Mode="In" Type="Int32" />
+            <Parameter Name="Severity" Mode="In" Type="String" />
+            <Parameter Name="Title" Mode="In" Type="String" />
+            <Parameter Name="Timestamp" Mode="In" Type="DateTime" />
+            <Parameter Name="MachineName" Mode="In" Type="String" />
+            <Parameter Name="AppDomainName" Mode="In" Type="String" />
+            <Parameter Name="ProcessID" Mode="In" Type="String" />
+            <Parameter Name="ProcessName" Mode="In" Type="String" />
+            <Parameter Name="ThreadName" Mode="In" Type="String" />
+            <Parameter Name="Win32ThreadId" Mode="In" Type="String" />
+            <Parameter Name="Message" Mode="In" Type="String" />
+            <Parameter Name="FormattedMessage" Mode="In" Type="String" />
+            <Parameter Name="LogId" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="WriteServiceLog">
+            <Parameter Name="machineName" Mode="In" Type="String" />
+            <Parameter Name="siteName" Mode="In" Type="String" />
+            <Parameter Name="logged" Mode="In" Type="DateTime" />
+            <Parameter Name="level" Mode="In" Type="String" />
+            <Parameter Name="userName" Mode="In" Type="String" />
+            <Parameter Name="Application" Mode="In" Type="String" />
+            <Parameter Name="message" Mode="In" Type="String" />
+            <Parameter Name="logger" Mode="In" Type="String" />
+            <Parameter Name="properties" Mode="In" Type="String" />
+            <Parameter Name="serverName" Mode="In" Type="String" />
+            <Parameter Name="port" Mode="In" Type="String" />
+            <Parameter Name="SessionId" Mode="In" Type="String" />
+            <Parameter Name="ThreadId" Mode="In" Type="Int32" />
+            <Parameter Name="CallerDetails" Mode="In" Type="String" />
+            <Parameter Name="RequestDump" Mode="In" Type="String" />
+            <Parameter Name="ResponseDump" Mode="In" Type="String" />
+            <Parameter Name="url" Mode="In" Type="String" />
+            <Parameter Name="https" Mode="In" Type="Boolean" />
+            <Parameter Name="serverAddress" Mode="In" Type="String" />
+            <Parameter Name="remoteAddress" Mode="In" Type="String" />
+            <Parameter Name="callSite" Mode="In" Type="String" />
+            <Parameter Name="PartitionKey" Mode="In" Type="Byte" />
+            <Parameter Name="exception" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="LoadStatus">
           <Key>
@@ -1105,6 +1218,35 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ServiceLog">
+          <Key>
+            <PropertyRef Name="ServiceLogID" />
+          </Key>
+          <Property Name="ServiceLogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MachineName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SiteName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Logged" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Level" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Application" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Logger" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Properties" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ServerName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Port" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SessionId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ThreadId" Type="Int32" />
+          <Property Name="CallerDetails" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Name="RequestDump" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Name="ResponseDump" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Name="Url" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="Https" Type="Boolean" />
+          <Property Name="ServerAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RemoteAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Callsite" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="PartitionKey" Type="Byte" Nullable="false" />
+          <Property Name="Exception" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1350,6 +1492,38 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ServiceLogs">
+            <EntityTypeMapping TypeName="FRSMT940Loader.DBModel.ServiceLog">
+              <MappingFragment StoreEntitySet="ServiceLog">
+                <ScalarProperty Name="Exception" ColumnName="Exception" />
+                <ScalarProperty Name="PartitionKey" ColumnName="PartitionKey" />
+                <ScalarProperty Name="Callsite" ColumnName="Callsite" />
+                <ScalarProperty Name="RemoteAddress" ColumnName="RemoteAddress" />
+                <ScalarProperty Name="ServerAddress" ColumnName="ServerAddress" />
+                <ScalarProperty Name="Https" ColumnName="Https" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="ResponseDump" ColumnName="ResponseDump" />
+                <ScalarProperty Name="RequestDump" ColumnName="RequestDump" />
+                <ScalarProperty Name="CallerDetails" ColumnName="CallerDetails" />
+                <ScalarProperty Name="ThreadId" ColumnName="ThreadId" />
+                <ScalarProperty Name="SessionId" ColumnName="SessionId" />
+                <ScalarProperty Name="Port" ColumnName="Port" />
+                <ScalarProperty Name="ServerName" ColumnName="ServerName" />
+                <ScalarProperty Name="Properties" ColumnName="Properties" />
+                <ScalarProperty Name="Logger" ColumnName="Logger" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Application" ColumnName="Application" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="Logged" ColumnName="Logged" />
+                <ScalarProperty Name="SiteName" ColumnName="SiteName" />
+                <ScalarProperty Name="MachineName" ColumnName="MachineName" />
+                <ScalarProperty Name="ServiceLogID" ColumnName="ServiceLogID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="WriteLog" FunctionName="FRSMT940Loader.DBModel.Store.WriteLog" />
+          <FunctionImportMapping FunctionImportName="WriteServiceLog" FunctionName="FRSMT940Loader.DBModel.Store.WriteServiceLog" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

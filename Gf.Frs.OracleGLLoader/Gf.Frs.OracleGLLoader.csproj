@@ -111,6 +111,12 @@
     <Compile Include="DataModel\OracleGLLoad.cs">
       <DependentUpon>FrsOracleGLLoaderModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataModel\ServiceLog.cs">
+      <DependentUpon>FrsOracleGLLoaderModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\Source.cs">
+      <DependentUpon>FrsOracleGLLoaderModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataModel\Status.cs">
       <DependentUpon>FrsOracleGLLoaderModel.tt</DependentUpon>
     </Compile>

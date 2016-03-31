@@ -94,6 +94,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FRSMT940LoaderModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="DataModel\ServiceLog.cs">
+      <DependentUpon>FRSMT940LoaderModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Handlers\MT940DatabaseHandler.cs" />
     <Compile Include="Fault\FaultClasses.cs" />
     <Compile Include="Helpers\DotNetHelper.cs" />

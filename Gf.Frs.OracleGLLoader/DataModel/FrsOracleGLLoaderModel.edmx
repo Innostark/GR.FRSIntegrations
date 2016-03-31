@@ -60,7 +60,7 @@
           <Property Name="Start" Type="datetime" Nullable="false" />
           <Property Name="Finish" Type="datetime" />
           <Property Name="InProgress" Type="bit" Nullable="false" />
-          <Property Name="LoadStatusId" Type="tinyint" />
+          <Property Name="LoadStatusId" Type="tinyint" Nullable="false" />
           <Property Name="ReadOnly" Type="bit" Nullable="false" />
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="CreatedOn" Type="datetime2" Precision="7" Nullable="false" />
@@ -74,8 +74,8 @@
           <Property Name="LoadMetaDataId" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LoadTypeId" Type="tinyint" Nullable="false" />
           <Property Name="SourceId" Type="tinyint" Nullable="false" />
-          <Property Name="Header" Type="nvarchar" MaxLength="256" Nullable="false" />
-          <Property Name="Trailer" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Header" Type="nvarchar" MaxLength="256" />
+          <Property Name="Trailer" Type="nvarchar" MaxLength="256" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="CurrencyId" Type="tinyint" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="1024" />
@@ -89,7 +89,7 @@
           <Key>
             <PropertyRef Name="Value" />
           </Key>
-          <Property Name="Value" Type="tinyint" Nullable="false" />
+          <Property Name="Value" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="15" Nullable="false" />
           <Property Name="StatusId" Type="tinyint" Nullable="false" />
         </EntityType>
@@ -168,6 +168,43 @@
           <Property Name="ModifiedOn" Type="datetime2" Precision="7" Nullable="false" StoreGeneratedPattern="Computed" />
           <Property Name="StatusId" Type="tinyint" Nullable="false" />
         </EntityType>
+        <EntityType Name="ServiceLog">
+          <Key>
+            <PropertyRef Name="ServiceLogID" />
+          </Key>
+          <Property Name="ServiceLogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MachineName" Type="nvarchar" MaxLength="200" />
+          <Property Name="SiteName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Logged" Type="datetime" Nullable="false" />
+          <Property Name="Level" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Application" Type="nvarchar" MaxLength="200" />
+          <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Logger" Type="nvarchar" MaxLength="300" />
+          <Property Name="Properties" Type="nvarchar(max)" />
+          <Property Name="ServerName" Type="nvarchar" MaxLength="200" />
+          <Property Name="Port" Type="nvarchar" MaxLength="100" />
+          <Property Name="SessionId" Type="nvarchar" MaxLength="100" />
+          <Property Name="ThreadId" Type="int" />
+          <Property Name="CallerDetails" Type="nvarchar" MaxLength="1024" />
+          <Property Name="RequestDump" Type="nvarchar" MaxLength="1024" />
+          <Property Name="ResponseDump" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Url" Type="nvarchar" MaxLength="2000" />
+          <Property Name="Https" Type="bit" />
+          <Property Name="ServerAddress" Type="nvarchar" MaxLength="100" />
+          <Property Name="RemoteAddress" Type="nvarchar" MaxLength="100" />
+          <Property Name="Callsite" Type="nvarchar" MaxLength="300" />
+          <Property Name="PartitionKey" Type="tinyint" Nullable="false" />
+          <Property Name="Exception" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Source">
+          <Key>
+            <PropertyRef Name="Value" />
+          </Key>
+          <Property Name="Value" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="StatusId" Type="tinyint" Nullable="false" />
+        </EntityType>
         <EntityType Name="Status">
           <Key>
             <PropertyRef Name="Value" />
@@ -200,7 +237,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Load_LoadStatus">
-          <End Role="LoadStatus" Type="Self.LoadStatus" Multiplicity="0..1" />
+          <End Role="LoadStatus" Type="Self.LoadStatus" Multiplicity="1" />
           <End Role="Load" Type="Self.Load" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="LoadStatus">
@@ -220,6 +257,18 @@
             </Principal>
             <Dependent Role="LoadMetaData">
               <PropertyRef Name="LoadTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoadMetaData_Source">
+          <End Role="Source" Type="Self.Source" Multiplicity="1" />
+          <End Role="LoadMetaData" Type="Self.LoadMetaData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Source">
+              <PropertyRef Name="Value" />
+            </Principal>
+            <Dependent Role="LoadMetaData">
+              <PropertyRef Name="SourceId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -319,6 +368,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Source_Status">
+          <End Role="Status" Type="Self.Status" Multiplicity="1" />
+          <End Role="Source" Type="Self.Source" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="Value" />
+            </Principal>
+            <Dependent Role="Source">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="WriteLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EventID" Type="int" Mode="In" />
           <Parameter Name="Priority" Type="int" Mode="In" />
@@ -335,6 +396,31 @@
           <Parameter Name="FormattedMessage" Type="ntext" Mode="In" />
           <Parameter Name="LogId" Type="int" Mode="InOut" />
         </Function>
+        <Function Name="WriteServiceLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="machineName" Type="nvarchar" Mode="In" />
+          <Parameter Name="siteName" Type="nvarchar" Mode="In" />
+          <Parameter Name="logged" Type="datetime" Mode="In" />
+          <Parameter Name="level" Type="varchar" Mode="In" />
+          <Parameter Name="userName" Type="nvarchar" Mode="In" />
+          <Parameter Name="Application" Type="nvarchar" Mode="In" />
+          <Parameter Name="message" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="logger" Type="nvarchar" Mode="In" />
+          <Parameter Name="properties" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="serverName" Type="nvarchar" Mode="In" />
+          <Parameter Name="port" Type="nvarchar" Mode="In" />
+          <Parameter Name="SessionId" Type="nvarchar" Mode="In" />
+          <Parameter Name="ThreadId" Type="int" Mode="In" />
+          <Parameter Name="CallerDetails" Type="nvarchar" Mode="In" />
+          <Parameter Name="RequestDump" Type="nvarchar" Mode="In" />
+          <Parameter Name="ResponseDump" Type="nvarchar" Mode="In" />
+          <Parameter Name="url" Type="nvarchar" Mode="In" />
+          <Parameter Name="https" Type="bit" Mode="In" />
+          <Parameter Name="serverAddress" Type="nvarchar" Mode="In" />
+          <Parameter Name="remoteAddress" Type="nvarchar" Mode="In" />
+          <Parameter Name="callSite" Type="nvarchar" Mode="In" />
+          <Parameter Name="PartitionKey" Type="tinyint" Mode="In" />
+          <Parameter Name="exception" Type="nvarchar(max)" Mode="In" />
+        </Function>
         <EntityContainer Name="FrsOracleGLLoaderDBModelStoreContainer">
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CategoryLog" EntityType="Self.CategoryLog" Schema="dbo" store:Type="Tables" />
@@ -348,6 +434,8 @@
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OracleGLEntry" EntityType="Self.OracleGLEntry" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OracleGLLoad" EntityType="Self.OracleGLLoad" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ServiceLog" EntityType="Self.ServiceLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Source" EntityType="Self.Source" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_CategoryLog_Category" Association="Self.FK_CategoryLog_Category">
             <End Role="Category" EntitySet="Category" />
@@ -363,6 +451,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_LoadMetaData_LoadType" Association="Self.FK_LoadMetaData_LoadType">
             <End Role="LoadType" EntitySet="LoadType" />
+            <End Role="LoadMetaData" EntitySet="LoadMetaData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoadMetaData_Source" Association="Self.FK_LoadMetaData_Source">
+            <End Role="Source" EntitySet="Source" />
             <End Role="LoadMetaData" EntitySet="LoadMetaData" />
           </AssociationSet>
           <AssociationSet Name="FK_LoadMetaData_Status" Association="Self.FK_LoadMetaData_Status">
@@ -396,6 +488,10 @@
           <AssociationSet Name="FK_OracleGLLoad_Status" Association="Self.FK_OracleGLLoad_Status">
             <End Role="Status" EntitySet="Status" />
             <End Role="OracleGLLoad" EntitySet="OracleGLLoad" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Source_Status" Association="Self.FK_Source_Status">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="Source" EntitySet="Source" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -461,7 +557,7 @@
           <Property Name="OracleGLLoadId" Type="Int64" />
           <NavigationProperty Name="LoadMetaData" Relationship="Self.FK_Load_LoadMetaData" FromRole="Load" ToRole="LoadMetaData" />
           <NavigationProperty Name="OracleGLLoad" Relationship="Self.FK_Load_OracleGLLoad" FromRole="Load" ToRole="OracleGLLoad" />
-          <Property Name="LoadStatusId" Type="Byte" />
+          <Property Name="LoadStatusId" Type="Byte" Nullable="false" />
           <NavigationProperty Name="LoadStatus" Relationship="FrsOracleGLLoader.DBModel.FK_Load_LoadStatus" FromRole="Load" ToRole="LoadStatu" />
         </EntityType>
         <EntityType Name="LoadMetaData">
@@ -471,8 +567,8 @@
           <Property Name="LoadMetaDataId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LoadTypeId" Type="Byte" Nullable="false" />
           <Property Name="SourceId" Type="Byte" Nullable="false" />
-          <Property Name="Header" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Trailer" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Header" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Trailer" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CurrencyId" Type="Byte" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
@@ -484,6 +580,7 @@
           <NavigationProperty Name="Loads" Relationship="Self.FK_Load_LoadMetaData" FromRole="LoadMetaData" ToRole="Load" />
           <NavigationProperty Name="LoadType" Relationship="Self.FK_LoadMetaData_LoadType" FromRole="LoadMetaData" ToRole="LoadType" />
           <NavigationProperty Name="Status" Relationship="Self.FK_LoadMetaData_Status" FromRole="LoadMetaData" ToRole="Status" />
+          <NavigationProperty Name="Source" Relationship="FrsOracleGLLoader.DBModel.FK_LoadMetaData_Source" FromRole="LoadMetaData" ToRole="Source" />
         </EntityType>
         <EntityType Name="LoadType">
           <Key>
@@ -546,6 +643,7 @@
           <NavigationProperty Name="OracleGLLoads" Relationship="Self.FK_OracleGLLoad_Status" FromRole="Status" ToRole="OracleGLLoad" />
           <NavigationProperty Name="OracleGLEntries" Relationship="FrsOracleGLLoader.DBModel.FK_OracleGLEntry_Status" FromRole="Status" ToRole="OracleGLEntry" />
           <NavigationProperty Name="LoadStatus" Relationship="FrsOracleGLLoader.DBModel.FK_LoadStatus_Status" FromRole="Status" ToRole="LoadStatu" />
+          <NavigationProperty Name="Sources" Relationship="FrsOracleGLLoader.DBModel.FK_Source_Status" FromRole="Status" ToRole="Source" />
         </EntityType>
         <Association Name="FK_CategoryLog_Category">
           <End Role="Category" Type="Self.Category" Multiplicity="1" />
@@ -741,6 +839,41 @@
             <End Role="Status" EntitySet="Status" />
             <End Role="LoadStatu" EntitySet="LoadStatus" />
           </AssociationSet>
+          <EntitySet Name="ServiceLogs" EntityType="FrsOracleGLLoader.DBModel.ServiceLog" />
+          <EntitySet Name="Sources" EntityType="FrsOracleGLLoader.DBModel.Source" />
+          <AssociationSet Name="FK_LoadMetaData_Source" Association="FrsOracleGLLoader.DBModel.FK_LoadMetaData_Source">
+            <End Role="Source" EntitySet="Sources" />
+            <End Role="LoadMetaData" EntitySet="LoadMetaDatas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Source_Status" Association="FrsOracleGLLoader.DBModel.FK_Source_Status">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="Source" EntitySet="Sources" />
+          </AssociationSet>
+          <FunctionImport Name="WriteServiceLog">
+            <Parameter Name="machineName" Mode="In" Type="String" />
+            <Parameter Name="siteName" Mode="In" Type="String" />
+            <Parameter Name="logged" Mode="In" Type="DateTime" />
+            <Parameter Name="level" Mode="In" Type="String" />
+            <Parameter Name="userName" Mode="In" Type="String" />
+            <Parameter Name="Application" Mode="In" Type="String" />
+            <Parameter Name="message" Mode="In" Type="String" />
+            <Parameter Name="logger" Mode="In" Type="String" />
+            <Parameter Name="properties" Mode="In" Type="String" />
+            <Parameter Name="serverName" Mode="In" Type="String" />
+            <Parameter Name="port" Mode="In" Type="String" />
+            <Parameter Name="SessionId" Mode="In" Type="String" />
+            <Parameter Name="ThreadId" Mode="In" Type="Int32" />
+            <Parameter Name="CallerDetails" Mode="In" Type="String" />
+            <Parameter Name="RequestDump" Mode="In" Type="String" />
+            <Parameter Name="ResponseDump" Mode="In" Type="String" />
+            <Parameter Name="url" Mode="In" Type="String" />
+            <Parameter Name="https" Mode="In" Type="Boolean" />
+            <Parameter Name="serverAddress" Mode="In" Type="String" />
+            <Parameter Name="remoteAddress" Mode="In" Type="String" />
+            <Parameter Name="callSite" Mode="In" Type="String" />
+            <Parameter Name="PartitionKey" Mode="In" Type="Byte" />
+            <Parameter Name="exception" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="OracleGLEntry">
           <Key>
@@ -832,7 +965,7 @@
           <NavigationProperty Name="Status" Relationship="FrsOracleGLLoader.DBModel.FK_LoadStatus_Status" FromRole="LoadStatu" ToRole="Status" />
         </EntityType>
         <Association Name="FK_Load_LoadStatus">
-          <End Type="FrsOracleGLLoader.DBModel.LoadStatus" Role="LoadStatu" Multiplicity="0..1" />
+          <End Type="FrsOracleGLLoader.DBModel.LoadStatus" Role="LoadStatu" Multiplicity="1" />
           <End Type="FrsOracleGLLoader.DBModel.Load" Role="Load" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="LoadStatu">
@@ -851,6 +984,69 @@
               <PropertyRef Name="Value" />
             </Principal>
             <Dependent Role="LoadStatu">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ServiceLog">
+          <Key>
+            <PropertyRef Name="ServiceLogID" />
+          </Key>
+          <Property Name="ServiceLogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MachineName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SiteName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Logged" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Level" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Application" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Logger" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Properties" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ServerName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Port" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SessionId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ThreadId" Type="Int32" />
+          <Property Name="CallerDetails" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Name="RequestDump" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Name="ResponseDump" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Name="Url" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="Https" Type="Boolean" />
+          <Property Name="ServerAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RemoteAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Callsite" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="PartitionKey" Type="Byte" Nullable="false" />
+          <Property Name="Exception" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Source">
+          <Key>
+            <PropertyRef Name="Value" />
+          </Key>
+          <Property Name="Value" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="StatusId" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="LoadMetaDatas" Relationship="FrsOracleGLLoader.DBModel.FK_LoadMetaData_Source" FromRole="Source" ToRole="LoadMetaData" />
+          <NavigationProperty Name="Status" Relationship="FrsOracleGLLoader.DBModel.FK_Source_Status" FromRole="Source" ToRole="Status" />
+        </EntityType>
+        <Association Name="FK_LoadMetaData_Source">
+          <End Type="FrsOracleGLLoader.DBModel.Source" Role="Source" Multiplicity="1" />
+          <End Type="FrsOracleGLLoader.DBModel.LoadMetaData" Role="LoadMetaData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Source">
+              <PropertyRef Name="Value" />
+            </Principal>
+            <Dependent Role="LoadMetaData">
+              <PropertyRef Name="SourceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Source_Status">
+          <End Type="FrsOracleGLLoader.DBModel.Status" Role="Status" Multiplicity="1" />
+          <End Type="FrsOracleGLLoader.DBModel.Source" Role="Source" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="Value" />
+            </Principal>
+            <Dependent Role="Source">
               <PropertyRef Name="StatusId" />
             </Dependent>
           </ReferentialConstraint>
@@ -1045,6 +1241,46 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ServiceLogs">
+            <EntityTypeMapping TypeName="FrsOracleGLLoader.DBModel.ServiceLog">
+              <MappingFragment StoreEntitySet="ServiceLog">
+                <ScalarProperty Name="Exception" ColumnName="Exception" />
+                <ScalarProperty Name="PartitionKey" ColumnName="PartitionKey" />
+                <ScalarProperty Name="Callsite" ColumnName="Callsite" />
+                <ScalarProperty Name="RemoteAddress" ColumnName="RemoteAddress" />
+                <ScalarProperty Name="ServerAddress" ColumnName="ServerAddress" />
+                <ScalarProperty Name="Https" ColumnName="Https" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="ResponseDump" ColumnName="ResponseDump" />
+                <ScalarProperty Name="RequestDump" ColumnName="RequestDump" />
+                <ScalarProperty Name="CallerDetails" ColumnName="CallerDetails" />
+                <ScalarProperty Name="ThreadId" ColumnName="ThreadId" />
+                <ScalarProperty Name="SessionId" ColumnName="SessionId" />
+                <ScalarProperty Name="Port" ColumnName="Port" />
+                <ScalarProperty Name="ServerName" ColumnName="ServerName" />
+                <ScalarProperty Name="Properties" ColumnName="Properties" />
+                <ScalarProperty Name="Logger" ColumnName="Logger" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Application" ColumnName="Application" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="Logged" ColumnName="Logged" />
+                <ScalarProperty Name="SiteName" ColumnName="SiteName" />
+                <ScalarProperty Name="MachineName" ColumnName="MachineName" />
+                <ScalarProperty Name="ServiceLogID" ColumnName="ServiceLogID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sources">
+            <EntityTypeMapping TypeName="FrsOracleGLLoader.DBModel.Source">
+              <MappingFragment StoreEntitySet="Source">
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="WriteServiceLog" FunctionName="FrsOracleGLLoader.DBModel.Store.WriteServiceLog" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -40,6 +40,8 @@ namespace Gf.Frs.OracleGLLoader.DataModel
         public virtual DbSet<OracleGLEntry> OracleGLEntries { get; set; }
         public virtual DbSet<Currency> Currencies { get; set; }
         public virtual DbSet<LoadStatus> LoadStatus { get; set; }
+        public virtual DbSet<ServiceLog> ServiceLogs { get; set; }
+        public virtual DbSet<Source> Sources { get; set; }
     
         public virtual int WriteLog(Nullable<int> eventID, Nullable<int> priority, string severity, string title, Nullable<System.DateTime> timestamp, string machineName, string appDomainName, string processID, string processName, string threadName, string win32ThreadId, string message, string formattedMessage, ObjectParameter logId)
         {
@@ -96,6 +98,103 @@ namespace Gf.Frs.OracleGLLoader.DataModel
                 new ObjectParameter("FormattedMessage", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("WriteLog", eventIDParameter, priorityParameter, severityParameter, titleParameter, timestampParameter, machineNameParameter, appDomainNameParameter, processIDParameter, processNameParameter, threadNameParameter, win32ThreadIdParameter, messageParameter, formattedMessageParameter, logId);
+        }
+    
+        public virtual int WriteServiceLog(string machineName, string siteName, Nullable<System.DateTime> logged, string level, string userName, string application, string message, string logger, string properties, string serverName, string port, string sessionId, Nullable<int> threadId, string callerDetails, string requestDump, string responseDump, string url, Nullable<bool> https, string serverAddress, string remoteAddress, string callSite, Nullable<byte> partitionKey, string exception)
+        {
+            var machineNameParameter = machineName != null ?
+                new ObjectParameter("machineName", machineName) :
+                new ObjectParameter("machineName", typeof(string));
+    
+            var siteNameParameter = siteName != null ?
+                new ObjectParameter("siteName", siteName) :
+                new ObjectParameter("siteName", typeof(string));
+    
+            var loggedParameter = logged.HasValue ?
+                new ObjectParameter("logged", logged) :
+                new ObjectParameter("logged", typeof(System.DateTime));
+    
+            var levelParameter = level != null ?
+                new ObjectParameter("level", level) :
+                new ObjectParameter("level", typeof(string));
+    
+            var userNameParameter = userName != null ?
+                new ObjectParameter("userName", userName) :
+                new ObjectParameter("userName", typeof(string));
+    
+            var applicationParameter = application != null ?
+                new ObjectParameter("Application", application) :
+                new ObjectParameter("Application", typeof(string));
+    
+            var messageParameter = message != null ?
+                new ObjectParameter("message", message) :
+                new ObjectParameter("message", typeof(string));
+    
+            var loggerParameter = logger != null ?
+                new ObjectParameter("logger", logger) :
+                new ObjectParameter("logger", typeof(string));
+    
+            var propertiesParameter = properties != null ?
+                new ObjectParameter("properties", properties) :
+                new ObjectParameter("properties", typeof(string));
+    
+            var serverNameParameter = serverName != null ?
+                new ObjectParameter("serverName", serverName) :
+                new ObjectParameter("serverName", typeof(string));
+    
+            var portParameter = port != null ?
+                new ObjectParameter("port", port) :
+                new ObjectParameter("port", typeof(string));
+    
+            var sessionIdParameter = sessionId != null ?
+                new ObjectParameter("SessionId", sessionId) :
+                new ObjectParameter("SessionId", typeof(string));
+    
+            var threadIdParameter = threadId.HasValue ?
+                new ObjectParameter("ThreadId", threadId) :
+                new ObjectParameter("ThreadId", typeof(int));
+    
+            var callerDetailsParameter = callerDetails != null ?
+                new ObjectParameter("CallerDetails", callerDetails) :
+                new ObjectParameter("CallerDetails", typeof(string));
+    
+            var requestDumpParameter = requestDump != null ?
+                new ObjectParameter("RequestDump", requestDump) :
+                new ObjectParameter("RequestDump", typeof(string));
+    
+            var responseDumpParameter = responseDump != null ?
+                new ObjectParameter("ResponseDump", responseDump) :
+                new ObjectParameter("ResponseDump", typeof(string));
+    
+            var urlParameter = url != null ?
+                new ObjectParameter("url", url) :
+                new ObjectParameter("url", typeof(string));
+    
+            var httpsParameter = https.HasValue ?
+                new ObjectParameter("https", https) :
+                new ObjectParameter("https", typeof(bool));
+    
+            var serverAddressParameter = serverAddress != null ?
+                new ObjectParameter("serverAddress", serverAddress) :
+                new ObjectParameter("serverAddress", typeof(string));
+    
+            var remoteAddressParameter = remoteAddress != null ?
+                new ObjectParameter("remoteAddress", remoteAddress) :
+                new ObjectParameter("remoteAddress", typeof(string));
+    
+            var callSiteParameter = callSite != null ?
+                new ObjectParameter("callSite", callSite) :
+                new ObjectParameter("callSite", typeof(string));
+    
+            var partitionKeyParameter = partitionKey.HasValue ?
+                new ObjectParameter("PartitionKey", partitionKey) :
+                new ObjectParameter("PartitionKey", typeof(byte));
+    
+            var exceptionParameter = exception != null ?
+                new ObjectParameter("exception", exception) :
+                new ObjectParameter("exception", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("WriteServiceLog", machineNameParameter, siteNameParameter, loggedParameter, levelParameter, userNameParameter, applicationParameter, messageParameter, loggerParameter, propertiesParameter, serverNameParameter, portParameter, sessionIdParameter, threadIdParameter, callerDetailsParameter, requestDumpParameter, responseDumpParameter, urlParameter, httpsParameter, serverAddressParameter, remoteAddressParameter, callSiteParameter, partitionKeyParameter, exceptionParameter);
         }
     }
 }

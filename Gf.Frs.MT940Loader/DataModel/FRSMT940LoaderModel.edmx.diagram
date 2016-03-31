@@ -40,6 +40,7 @@
         <EntityTypeShape EntityType="FRSMT940Loader.DBModel.LoadStatus" Width="1.5" PointX="3" PointY="16" />
         <AssociationConnector Association="FRSMT940Loader.DBModel.FK_Load_LoadStatus" />
         <AssociationConnector Association="FRSMT940Loader.DBModel.FK_LoadStatus_Status" />
+        <EntityTypeShape EntityType="FRSMT940Loader.DBModel.ServiceLog" Width="1.5" PointX="10.375" PointY="11.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
